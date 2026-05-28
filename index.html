@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dega & Co. — Immobilier locatif · Québec & Alberta</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Fraunces:opsz,ital,wght@9..144,0,400;9..144,0,500;9..144,0,600;9..144,1,400;9..144,1,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1612;
+    --paper: #f5f1ea;
+    --paper-warm: #ede5d5;
+    --cream: #faf6ee;
+    --gold: #b8935a;
+    --gold-dark: #8a6c3f;
+    --burgundy: #6b1f2e;
+    --green: #4a6741;
+    --muted: #6b6157;
+    --line: #d4c9b5;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Manrope', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.6;
+    font-size: 15px;
+  }
+
+  img { max-width: 100%; display: block; }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+
+  /* HEADER / NAV (sticky, functional) */
+  header {
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  nav {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 40px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    cursor: pointer;
+    background: none;
+    border: none;
+    text-align: left;
+    color: var(--ink);
+  }
+  .logo .amp { font-style: italic; color: var(--gold); }
+  .logo small {
+    display: block;
+    font-family: 'Manrope', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-top: 6px;
+    opacity: 0.6;
+    font-weight: 500;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+    font-size: 14px;
+    align-items: center;
+  }
+
+  .nav-links button {
+    background: none;
+    border: none;
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+  }
+  .nav-links button:hover { color: var(--burgundy); }
+  .nav-links button.active { border-bottom-color: var(--burgundy); color: var(--burgundy); font-weight: 600; }
+  .nav-links button.discreet { color: var(--muted); font-size: 13px; }
+  .nav-links button.discreet:hover { color: var(--burgundy); }
+
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+
+  .lang-toggle {
+    border: 1px solid var(--ink);
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    background: transparent;
+    font-family: inherit;
+  }
+
+  /* PAGE SECTIONS (toggle via JS) */
+  .page { display: none; padding: 60px 0; }
+  .page.active { display: block; }
+
+  /* HERO */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: center;
+    margin-bottom: 50px;
+  }
+  .hero-eyebrow {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .hero-text h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(44px, 5vw, 70px);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-bottom: 26px;
+  }
+  .hero-text h1 em { font-style: italic; color: var(--burgundy); }
+  .hero-text p { font-size: 17px; color: var(--muted); max-width: 480px; margin-bottom: 32px; }
+  .hero-cta-row { display: flex; gap: 16px; flex-wrap: wrap; }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--ink); color: var(--paper);
+    padding: 16px 28px; text-decoration: none; border: none; cursor: pointer;
+    font-size: 14px; font-weight: 600; letter-spacing: 0.05em; font-family: inherit;
+  }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 10px;
+    border: 1px solid var(--ink); color: var(--ink); background: none;
+    padding: 15px 28px; text-decoration: none; cursor: pointer;
+    font-size: 14px; font-weight: 600; letter-spacing: 0.05em; font-family: inherit;
+  }
+
+  .hero-image { aspect-ratio: 4/5; overflow: hidden; position: relative; }
+  .hero-image img { width: 100%; height: 100%; object-fit: cover; }
+  .hero-image-overlay {
+    position: absolute; bottom: 20px; left: 20px;
+    background: var(--paper); padding: 12px 18px;
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 600;
+  }
+
+  /* MARKET SELECTOR */
+  .market-selector { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 70px; }
+  .market-card { background: white; border: 1px solid var(--line); padding: 24px; cursor: pointer; transition: transform 0.2s; }
+  .market-card:hover { transform: translateY(-4px); }
+  .market-card.active { border-color: var(--burgundy); border-width: 2px; }
+  .market-flag { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-dark); font-weight: 600; margin-bottom: 8px; }
+  .market-name { font-family: 'DM Serif Display', serif; font-size: 22px; margin-bottom: 12px; letter-spacing: -0.01em; }
+  .market-stat { font-size: 13px; color: var(--muted); display: flex; justify-content: space-between; padding: 6px 0; border-top: 1px solid var(--line); }
+  .market-stat strong { color: var(--ink); }
+  .market-available { margin-top: 12px; font-size: 12px; font-weight: 700; color: var(--green); letter-spacing: 0.05em; }
+
+  /* AVAILABILITY BAR */
+  .availability-bar {
+    background: var(--ink); color: var(--paper);
+    padding: 28px 36px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 50px;
+  }
+  .availability-bar-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.7; }
+  .availability-count { font-family: 'DM Serif Display', serif; font-size: 32px; margin-top: 4px; }
+  .availability-link { color: var(--gold); text-decoration: none; font-size: 14px; font-weight: 600; letter-spacing: 0.05em; background: none; border: none; cursor: pointer; font-family: inherit; }
+
+  /* SECTION HEADERS */
+  .section-header { display: flex; justify-content: space-between; align-items: end; margin-bottom: 36px; flex-wrap: wrap; gap: 20px; }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: 42px; letter-spacing: -0.02em; line-height: 1.05; }
+  .section-title em { font-style: italic; color: var(--burgundy); }
+  .section-subtitle { color: var(--muted); font-size: 15px; margin-top: 8px; }
+  .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; }
+  .filter-chip { padding: 8px 16px; background: white; border: 1px solid var(--line); font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit; }
+  .filter-chip.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+  /* LISTINGS */
+  .listings-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+  .listing { background: white; border: 1px solid var(--line); overflow: hidden; transition: transform 0.2s; cursor: pointer; }
+  .listing:hover { transform: translateY(-4px); }
+  .listing-image { aspect-ratio: 4/3; position: relative; overflow: hidden; }
+  .listing-image img { width: 100%; height: 100%; object-fit: cover; }
+  .badge { position: absolute; top: 14px; left: 14px; padding: 5px 11px; font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; z-index: 2; }
+  .badge.available { background: var(--green); color: white; }
+  .badge.soon { background: var(--gold); color: var(--ink); }
+  .badge.rented { background: var(--muted); color: white; }
+  .badge-market { position: absolute; top: 14px; right: 14px; padding: 5px 11px; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; background: rgba(26,22,18,0.85); color: white; z-index: 2; }
+  .listing-body { padding: 22px; }
+  .listing-address { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 600; margin-bottom: 4px; letter-spacing: -0.01em; }
+  .listing-neighborhood { font-size: 12px; color: var(--muted); margin-bottom: 18px; text-transform: uppercase; letter-spacing: 0.12em; }
+  .listing-details { display: flex; gap: 18px; font-size: 13px; margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+  .listing-details span { color: var(--muted); }
+  .listing-details strong { color: var(--ink); font-weight: 600; }
+  .listing-footer { display: flex; justify-content: space-between; align-items: center; }
+  .listing-price { font-family: 'DM Serif Display', serif; font-size: 26px; }
+  .listing-price span { font-size: 12px; color: var(--muted); font-family: 'Manrope', sans-serif; }
+  .listing-date { font-size: 12px; color: var(--green); font-weight: 600; letter-spacing: 0.05em; }
+
+  /* DETAIL */
+  .detail-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; margin-top: 30px; }
+  .detail-images { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .detail-image-main { grid-column: 1 / -1; aspect-ratio: 16/10; overflow: hidden; }
+  .detail-image-main img { width: 100%; height: 100%; object-fit: cover; }
+  .detail-image-small { aspect-ratio: 1/1; overflow: hidden; }
+  .detail-image-small img { width: 100%; height: 100%; object-fit: cover; }
+  .detail-info { display: flex; flex-direction: column; gap: 20px; }
+  .detail-header h2 { font-family: 'DM Serif Display', serif; font-size: 36px; margin-bottom: 6px; letter-spacing: -0.02em; line-height: 1.05; }
+  .detail-meta { color: var(--muted); font-size: 14px; }
+  .price-block { background: var(--ink); color: var(--paper); padding: 26px; }
+  .price-block-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.6; margin-bottom: 6px; }
+  .price-block-amount { font-family: 'DM Serif Display', serif; font-size: 42px; line-height: 1; }
+  .price-block-amount span { font-size: 14px; opacity: 0.6; font-family: 'Manrope', sans-serif; }
+  .price-block-available { font-size: 13px; margin-top: 12px; color: var(--gold); font-weight: 600; }
+  .inclusions { background: var(--paper-warm); padding: 22px; }
+  .inclusions-title { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; font-weight: 600; }
+  .inclusions-list { list-style: none; font-size: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .inclusions-list li::before { content: "✓"; color: var(--green); font-weight: 700; margin-right: 8px; }
+  .visit-cta { background: var(--burgundy); color: white; padding: 18px; text-align: center; font-weight: 600; letter-spacing: 0.05em; text-decoration: none; display: block; font-size: 15px; border: none; cursor: pointer; font-family: inherit; }
+  .back-link { background: none; border: none; color: var(--muted); font-size: 13px; cursor: pointer; font-family: inherit; letter-spacing: 0.05em; margin-bottom: 16px; padding: 0; }
+  .back-link:hover { color: var(--burgundy); }
+
+  /* DIFFERENTIATORS */
+  .differentiators { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; padding: 40px 0; }
+  .diff-item { border-top: 2px solid var(--ink); padding-top: 24px; }
+  .diff-number { font-family: 'Fraunces', serif; font-size: 13px; color: var(--burgundy); letter-spacing: 0.15em; margin-bottom: 14px; font-style: italic; }
+  .diff-title { font-family: 'DM Serif Display', serif; font-size: 24px; margin-bottom: 10px; letter-spacing: -0.01em; }
+  .diff-text { font-size: 14px; color: var(--muted); }
+
+  /* ABOUT INTRO */
+  .about-intro { max-width: 760px; margin: 0 auto 30px; text-align: center; }
+  .about-intro .quote-mark { font-family: 'DM Serif Display', serif; font-size: 90px; color: var(--gold); line-height: 0.6; }
+  .about-intro h3 { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 30px; line-height: 1.35; margin-bottom: 24px; }
+  .about-signature { font-family: 'Fraunces', serif; font-style: italic; font-size: 20px; color: var(--burgundy); }
+  .about-role { font-size: 11px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--muted); margin-top: 4px; }
+
+  /* TESTIMONIALS */
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin: 50px 0 0; }
+  .testimonial-card { background: white; padding: 32px; border-top: 3px solid var(--burgundy); }
+  .testimonial-quote { font-family: 'Fraunces', serif; font-style: italic; font-size: 17px; line-height: 1.5; margin-bottom: 20px; }
+  .testimonial-attribution { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+
+  /* CITIES PAGE */
+  .city-block { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; margin-bottom: 50px; padding-bottom: 50px; border-bottom: 1px solid var(--line); }
+  .city-block:nth-child(even) .city-image { order: 2; }
+  .city-image { aspect-ratio: 16/11; overflow: hidden; }
+  .city-image img { width: 100%; height: 100%; object-fit: cover; }
+  .city-info h3 { font-family: 'DM Serif Display', serif; font-size: 34px; letter-spacing: -0.02em; margin-bottom: 6px; }
+  .city-flag { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-dark); font-weight: 600; margin-bottom: 10px; }
+  .city-info p { color: var(--muted); font-size: 15px; margin-bottom: 18px; }
+  .city-facts { display: flex; gap: 30px; }
+  .city-fact-num { font-family: 'DM Serif Display', serif; font-size: 26px; }
+  .city-fact-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+
+  /* BUSINESS / CONTACT FORM */
+  .business-band { background: var(--cream); border: 1px solid var(--line); padding: 50px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .business-col h3 { font-family: 'DM Serif Display', serif; font-size: 26px; margin-bottom: 12px; letter-spacing: -0.01em; }
+  .business-col p { font-size: 14px; color: var(--muted); margin-bottom: 18px; }
+  .audience-eyebrow { font-family: 'Fraunces', serif; font-style: italic; font-size: 13px; color: var(--gold-dark); margin-bottom: 10px; }
+  .business-link { font-size: 13px; font-weight: 600; letter-spacing: 0.05em; color: var(--ink); text-decoration: none; border: none; background: none; cursor: pointer; font-family: inherit; border-bottom: 2px solid var(--gold); padding-bottom: 2px; }
+  .business-divider { width: 1px; background: var(--line); }
+
+  .form-wrap { max-width: 640px; margin: 0 auto; }
+  .form-intro { text-align: center; margin-bottom: 36px; }
+  .form-row { margin-bottom: 20px; }
+  .form-row label { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); font-weight: 600; margin-bottom: 8px; }
+  .form-row input, .form-row select, .form-row textarea {
+    width: 100%; padding: 13px 16px; border: 1px solid var(--line); background: white;
+    font-family: inherit; font-size: 15px; color: var(--ink);
+  }
+  .form-row textarea { resize: vertical; min-height: 120px; }
+  .form-two { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .form-submit { background: var(--ink); color: var(--paper); border: none; padding: 16px 32px; font-family: inherit; font-size: 14px; font-weight: 600; letter-spacing: 0.05em; cursor: pointer; width: 100%; }
+  .form-note { font-size: 12px; color: var(--muted); text-align: center; margin-top: 16px; }
+
+  /* FOOTER */
+  footer { background: var(--ink); color: var(--paper); padding: 70px 40px 30px; }
+  .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+  footer .logo { color: var(--paper); font-size: 30px; cursor: default; }
+  footer .logo .amp { color: var(--gold); }
+  .footer-tagline { margin-top: 12px; opacity: 0.6; font-size: 13px; max-width: 280px; }
+  .footer-col h4 { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 16px; color: var(--gold); }
+  .footer-col button { display: block; color: var(--paper); text-decoration: none; font-size: 13px; opacity: 0.7; margin-bottom: 8px; background: none; border: none; cursor: pointer; font-family: inherit; text-align: left; padding: 0; }
+  .footer-col button:hover { opacity: 1; }
+  .footer-bottom { max-width: 1200px; margin: 0 auto; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px; font-size: 11px; opacity: 0.5; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+
+  @media (max-width: 900px) {
+    .hero, .listings-grid, .differentiators, .testimonials-grid, .business-band, .footer-grid, .detail-grid, .city-block, .form-two { grid-template-columns: 1fr; }
+    .market-selector { grid-template-columns: 1fr 1fr; }
+    .business-divider { display: none; }
+    .city-block:nth-child(even) .city-image { order: 0; }
+    .container { padding: 0 20px; }
+    nav { padding: 18px 20px; }
+    .section-title { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header>
+  <nav>
+    <button class="logo" onclick="showPage('accueil')">Dega <span class="amp">&amp;</span> Co.<small>Immobilier · Québec &amp; Alberta</small></button>
+    <ul class="nav-links">
+      <li><button data-page="accueil" class="active" onclick="showPage('accueil')">Disponibilités</button></li>
+      <li><button data-page="villes" onclick="showPage('villes')">Nos villes</button></li>
+      <li><button data-page="apropos" onclick="showPage('apropos')">Vivre chez nous</button></li>
+      <li><button data-page="investir" class="discreet" onclick="showPage('investir')">Investir</button></li>
+      <li><button data-page="vendeurs" class="discreet" onclick="showPage('vendeurs')">Vendeurs</button></li>
+    </ul>
+    <div class="nav-right">
+      <button class="lang-toggle">EN</button>
+    </div>
+  </nav>
+</header>
+
+<div class="container">
+
+  <!-- ============ PAGE: ACCUEIL / DISPONIBILITÉS ============ -->
+  <section class="page active" id="page-accueil">
+    <div class="hero">
+      <div class="hero-text">
+        <div class="hero-eyebrow">Saint-Hyacinthe · Sherbrooke · Montréal · Edmonton</div>
+        <h1>Un chez-soi <em>bien géré</em>, où que vous soyez.</h1>
+        <p>Dega &amp; Co. détient et gère des logements soignés au Québec et en Alberta. Réponses rapides, entretien attentif, et le même standard de qualité dans chaque ville.</p>
+        <div class="hero-cta-row">
+          <button class="btn-primary" onclick="document.getElementById('dispos').scrollIntoView({behavior:'smooth'})">Voir les logements disponibles →</button>
+          <button class="btn-secondary" onclick="showPage('apropos')">Nos engagements</button>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80" alt="Intérieur lumineux">
+        <div class="hero-image-overlay">Saint-Hyacinthe · Av. Mailhot</div>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Nos villes</h2>
+        <p class="section-subtitle">Choisissez votre marché pour voir les disponibilités</p>
+      </div>
+    </div>
+
+    <div class="market-selector">
+      <div class="market-card active">
+        <div class="market-flag">⚜ Québec · Montérégie</div>
+        <div class="market-name">Saint-Hyacinthe</div>
+        <div class="market-stat"><span>Loyer 4½ moyen</span><strong>1 050-1 450 $</strong></div>
+        <div class="market-stat"><span>Notre présence</span><strong>Principale</strong></div>
+        <div class="market-available">● 2 logements disponibles</div>
+      </div>
+      <div class="market-card">
+        <div class="market-flag">⚜ Québec · Estrie</div>
+        <div class="market-name">Sherbrooke</div>
+        <div class="market-stat"><span>Loyer moyen</span><strong>≈ 1 430 $</strong></div>
+        <div class="market-stat"><span>Notre présence</span><strong>En croissance</strong></div>
+        <div class="market-available">● 1 logement disponible</div>
+      </div>
+      <div class="market-card">
+        <div class="market-flag">⚜ Québec · Montréal</div>
+        <div class="market-name">Montréal</div>
+        <div class="market-stat"><span>Loyer 4½ moyen</span><strong>≈ 1 850 $</strong></div>
+        <div class="market-stat"><span>Notre présence</span><strong>Sélective</strong></div>
+        <div class="market-available" style="color: var(--muted);">○ Complet</div>
+      </div>
+      <div class="market-card">
+        <div class="market-flag">🍁 Alberta</div>
+        <div class="market-name">Edmonton</div>
+        <div class="market-stat"><span>Loyer 2 ch. moyen</span><strong>≈ 1 550 $</strong></div>
+        <div class="market-stat"><span>Notre présence</span><strong>Nouvelle</strong></div>
+        <div class="market-available">● 1 logement disponible</div>
+      </div>
+    </div>
+
+    <div class="availability-bar" id="dispos">
+      <div>
+        <div class="availability-bar-label">Disponibilités · tous marchés confondus</div>
+        <div class="availability-count">4 logements à louer</div>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Logements disponibles</h2>
+        <p class="section-subtitle">Mis à jour en temps réel · Filtrer par ville</p>
+      </div>
+      <div class="filter-bar">
+        <span class="filter-chip active" onclick="filterListings(this,'all')">Tous</span>
+        <span class="filter-chip" onclick="filterListings(this,'sthyacinthe')">St-Hyacinthe</span>
+        <span class="filter-chip" onclick="filterListings(this,'sherbrooke')">Sherbrooke</span>
+        <span class="filter-chip" onclick="filterListings(this,'edmonton')">Edmonton</span>
+      </div>
+    </div>
+
+    <div class="listings-grid">
+      <div class="listing" data-city="sthyacinthe" onclick="showPage('fiche')">
+        <div class="listing-image">
+          <span class="badge available">Disponible</span>
+          <span class="badge-market">St-Hyacinthe</span>
+          <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?w=600&q=80" alt="4½ Saint-Hyacinthe">
+        </div>
+        <div class="listing-body">
+          <div class="listing-address">2155, av. Mailhot</div>
+          <div class="listing-neighborhood">Secteur Sacré-Cœur</div>
+          <div class="listing-details">
+            <span><strong>4½</strong></span><span><strong>2</strong> ch.</span><span><strong>74</strong> m²</span><span><strong>2e</strong> ét.</span>
+          </div>
+          <div class="listing-footer">
+            <div class="listing-price">1 295 $<span>/mois</span></div>
+            <div class="listing-date">1 juillet</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="listing" data-city="sherbrooke" onclick="showPage('fiche')">
+        <div class="listing-image">
+          <span class="badge available">Disponible</span>
+          <span class="badge-market">Sherbrooke</span>
+          <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&q=80" alt="4½ Sherbrooke">
+        </div>
+        <div class="listing-body">
+          <div class="listing-address">1480, rue Galt Ouest</div>
+          <div class="listing-neighborhood">Mont-Bellevue</div>
+          <div class="listing-details">
+            <span><strong>4½</strong></span><span><strong>2</strong> ch.</span><span><strong>70</strong> m²</span><span><strong>1er</strong> ét.</span>
+          </div>
+          <div class="listing-footer">
+            <div class="listing-price">1 450 $<span>/mois</span></div>
+            <div class="listing-date">1 août</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="listing" data-city="edmonton" onclick="showPage('fiche')">
+        <div class="listing-image">
+          <span class="badge soon">Bientôt</span>
+          <span class="badge-market">Edmonton</span>
+          <img src="https://images.unsplash.com/photo-1565182999561-18d7dc61c393?w=600&q=80" alt="2 chambres Edmonton">
+        </div>
+        <div class="listing-body">
+          <div class="listing-address">10815, 82 Avenue NW</div>
+          <div class="listing-neighborhood">Old Strathcona</div>
+          <div class="listing-details">
+            <span><strong>2 ch.</strong></span><span><strong>1</strong> sdb</span><span><strong>78</strong> m²</span><span><strong>3e</strong> ét.</span>
+          </div>
+          <div class="listing-footer">
+            <div class="listing-price">1 595 $<span>/mois</span></div>
+            <div class="listing-date">1 sept.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE: FICHE DÉTAILLÉE ============ -->
+  <section class="page" id="page-fiche">
+    <button class="back-link" onclick="showPage('accueil')">← Retour aux disponibilités</button>
+    <div style="font-size: 13px; color: var(--muted); margin-bottom: 16px; letter-spacing: 0.05em;">
+      Accueil › Saint-Hyacinthe › 2155, av. Mailhot › Appartement 4
+    </div>
+
+    <div class="detail-grid">
+      <div class="detail-images">
+        <div class="detail-image-main">
+          <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=900&q=80" alt="Salon">
+        </div>
+        <div class="detail-image-small">
+          <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=500&q=80" alt="Cuisine">
+        </div>
+        <div class="detail-image-small">
+          <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?w=500&q=80" alt="Chambre">
+        </div>
+      </div>
+
+      <div class="detail-info">
+        <div class="detail-header">
+          <h2>4½ moderne · Sacré-Cœur</h2>
+          <div class="detail-meta">2155, av. Mailhot, app. 4 · Saint-Hyacinthe · 2e étage</div>
+        </div>
+        <div class="price-block">
+          <div class="price-block-label">Loyer mensuel</div>
+          <div class="price-block-amount">1 295 $<span> / mois</span></div>
+          <div class="price-block-available">✓ Disponible dès le 1er juillet 2026</div>
+        </div>
+        <div class="inclusions">
+          <div class="inclusions-title">Inclus dans le loyer</div>
+          <ul class="inclusions-list">
+            <li>Eau chaude</li><li>Stationnement</li><li>Buanderie</li><li>Déneigement</li><li>Rangement</li><li>Entretien</li>
+          </ul>
+        </div>
+        <button class="visit-cta" onclick="showPage('investir'); return false;" style="background: var(--burgundy);">Réserver une visite →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE: NOS VILLES ============ -->
+  <section class="page" id="page-villes">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Nos villes</h2>
+        <p class="section-subtitle">Quatre marchés, un même standard de gestion</p>
+      </div>
+    </div>
+
+    <div class="city-block">
+      <div class="city-image"><img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800&q=80" alt="Saint-Hyacinthe"></div>
+      <div class="city-info">
+        <div class="city-flag">⚜ Québec · Montérégie</div>
+        <h3>Saint-Hyacinthe</h3>
+        <p>Notre marché principal. Ville agroalimentaire de 60 000 habitants à 45 minutes de Montréal, avec un marché locatif parmi les plus stables au Québec. C'est ici que tout a commencé pour Dega &amp; Co.</p>
+        <div class="city-facts">
+          <div><div class="city-fact-num">2</div><div class="city-fact-label">Disponibles</div></div>
+          <div><div class="city-fact-num">1,1 %</div><div class="city-fact-label">Inoccupation</div></div>
+          <div><div class="city-fact-num">Principale</div><div class="city-fact-label">Présence</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="city-block">
+      <div class="city-image"><img src="https://images.unsplash.com/photo-1519178614-68673b201f36?w=800&q=80" alt="Sherbrooke"></div>
+      <div class="city-info">
+        <div class="city-flag">⚜ Québec · Estrie</div>
+        <h3>Sherbrooke</h3>
+        <p>Ville universitaire dynamique au cœur de l'Estrie. Un marché en croissance soutenue où nous développons notre présence, porté par une demande locative étudiante et professionnelle constante.</p>
+        <div class="city-facts">
+          <div><div class="city-fact-num">1</div><div class="city-fact-label">Disponible</div></div>
+          <div><div class="city-fact-num">≈ 1 430 $</div><div class="city-fact-label">Loyer moyen</div></div>
+          <div><div class="city-fact-num">En croissance</div><div class="city-fact-label">Présence</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="city-block">
+      <div class="city-image"><img src="https://img.magnific.com/free-photo/montreal-sunrise_649448-3795.jpg" alt="Montréal"></div>
+      <div class="city-info">
+        <div class="city-flag">⚜ Québec · Montréal</div>
+        <h3>Montréal</h3>
+        <p>Acquisitions sélectives dans les quartiers centraux. Nous y choisissons des immeubles à fort potentiel, avec la même discipline qui guide chacune de nos décisions.</p>
+        <div class="city-facts">
+          <div><div class="city-fact-num">—</div><div class="city-fact-label">Complet</div></div>
+          <div><div class="city-fact-num">≈ 1 850 $</div><div class="city-fact-label">Loyer 4½</div></div>
+          <div><div class="city-fact-num">Sélective</div><div class="city-fact-label">Présence</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="city-block">
+      <div class="city-image"><img src="https://images.unsplash.com/photo-1609766857041-ed402ea8069a?w=800&q=80" alt="Edmonton"></div>
+      <div class="city-info">
+        <div class="city-flag">🍁 Alberta</div>
+        <h3>Edmonton</h3>
+        <p>Notre nouveau marché et notre première incursion hors Québec. Une économie forte, une croissance démographique soutenue et un cadre locatif différent que nous maîtrisons, avec un service en anglais.</p>
+        <div class="city-facts">
+          <div><div class="city-fact-num">1</div><div class="city-fact-label">Disponible</div></div>
+          <div><div class="city-fact-num">≈ 1 550 $</div><div class="city-fact-label">Loyer 2 ch.</div></div>
+          <div><div class="city-fact-num">Nouvelle</div><div class="city-fact-label">Présence</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE: VIVRE CHEZ NOUS / À PROPOS ============ -->
+  <section class="page" id="page-apropos">
+    <div class="about-intro">
+      <div class="quote-mark">"</div>
+      <h3>Que vous soyez à Saint-Hyacinthe ou à Edmonton, vous méritez un propriétaire qui répond, qui entretient, et qui vous respecte.</h3>
+      <div class="about-signature">— Cynthie Dega Kougoum</div>
+      <div class="about-role">Fondatrice · Dega &amp; Co.</div>
+    </div>
+
+    <div class="section-header" style="justify-content: center; text-align: center; margin-top: 60px;">
+      <div>
+        <h2 class="section-title">Nos engagements envers <em>nos locataires</em></h2>
+        <p class="section-subtitle">Le même standard, dans chaque ville.</p>
+      </div>
+    </div>
+
+    <div class="differentiators">
+      <div class="diff-item">
+        <div class="diff-number">01 — Réactivité</div>
+        <div class="diff-title">Réponse sous 24 heures</div>
+        <div class="diff-text">Un contact local dans chaque ville. Vous parlez à une vraie personne, pas à un centre d'appels anonyme.</div>
+      </div>
+      <div class="diff-item">
+        <div class="diff-number">02 — Transparence</div>
+        <div class="diff-title">Règles claires, partout</div>
+        <div class="diff-text">Au Québec, augmentations conformes au TAL. En Alberta, préavis écrit et hausses prévisibles, une fois par an.</div>
+      </div>
+      <div class="diff-item">
+        <div class="diff-number">03 — Entretien</div>
+        <div class="diff-title">Logements soignés</div>
+        <div class="diff-text">Inspection préventive annuelle et réseau de fournisseurs de confiance dans chaque marché.</div>
+      </div>
+      <div class="diff-item">
+        <div class="diff-number">04 — Animaux</div>
+        <div class="diff-title">Bienvenue aux animaux</div>
+        <div class="diff-text">Politique claire et raisonnable. La plupart de nos immeubles acceptent chiens et chats.</div>
+      </div>
+      <div class="diff-item">
+        <div class="diff-number">05 — Paiement</div>
+        <div class="diff-title">Loyer en ligne</div>
+        <div class="diff-text">Prélèvement automatique, virement Interac ou e-transfer. Reçus annuels automatiques.</div>
+      </div>
+      <div class="diff-item">
+        <div class="diff-number">06 — Bilingue</div>
+        <div class="diff-title">Servi dans votre langue</div>
+        <div class="diff-text">Service en français au Québec, en anglais en Alberta. Toujours dans la langue qui vous convient.</div>
+      </div>
+    </div>
+
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="testimonial-quote">« On a trouvé notre 4½ à Saint-Hyacinthe en deux jours via leur site. Visite réservée en ligne, réponse le jour même. Tellement plus simple que Kijiji. »</div>
+        <div class="testimonial-attribution">Marie-Pier · Saint-Hyacinthe · depuis 2022</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-quote">« Quand le chauffe-eau a lâché en janvier, c'était réglé en 24h. Pour un proprio à distance, j'étais impressionné. »</div>
+        <div class="testimonial-attribution">David · Sherbrooke · depuis 2024</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-quote">« As newcomers to Edmonton, having a landlord who responds in both languages made everything easier. »</div>
+        <div class="testimonial-attribution">Amara &amp; Joel · Edmonton · since 2025</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE: INVESTIR (→ formulaire contact) ============ -->
+  <section class="page" id="page-investir">
+    <div class="form-wrap">
+      <div class="form-intro">
+        <div class="audience-eyebrow">— Investir avec Dega &amp; Co. —</div>
+        <h2 class="section-title">Discutons.</h2>
+        <p class="section-subtitle">Vous êtes intéressé à explorer un partenariat d'investissement, sur l'un de nos marchés ou ailleurs? Laissez-nous un mot et nous vous reviendrons pour une première conversation, sans engagement.</p>
+      </div>
+
+      <div class="form-row">
+        <label>Nom complet</label>
+        <input type="text" placeholder="Votre nom">
+      </div>
+      <div class="form-two">
+        <div class="form-row">
+          <label>Courriel</label>
+          <input type="email" placeholder="vous@exemple.com">
+        </div>
+        <div class="form-row">
+          <label>Téléphone</label>
+          <input type="tel" placeholder="(000) 000-0000">
+        </div>
+      </div>
+      <div class="form-row">
+        <label>Vous êtes</label>
+        <select>
+          <option>Investisseur potentiel</option>
+          <option>Courtier / professionnel</option>
+          <option>Autre</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>Votre message</label>
+        <textarea placeholder="Dites-nous ce qui vous intéresse..."></textarea>
+      </div>
+      <button class="form-submit">Envoyer ma demande</button>
+      <div class="form-note">Nous traitons chaque demande confidentiellement. Réponse sous 48 heures.</div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE: VENDEURS ============ -->
+  <section class="page" id="page-vendeurs">
+    <div class="form-wrap">
+      <div class="form-intro">
+        <div class="audience-eyebrow">— Pour vendeurs et courtiers —</div>
+        <h2 class="section-title">Nous achetons.</h2>
+        <p class="section-subtitle">Acheteuse sérieuse d'immeubles résidentiels au Québec et en Alberta. Triplex à quintuplex, fermeture rapide, pré-approbation en place. Présentez-nous une opportunité, discrètement.</p>
+      </div>
+
+      <div class="form-row">
+        <label>Nom complet</label>
+        <input type="text" placeholder="Votre nom">
+      </div>
+      <div class="form-two">
+        <div class="form-row">
+          <label>Courriel</label>
+          <input type="email" placeholder="vous@exemple.com">
+        </div>
+        <div class="form-row">
+          <label>Téléphone</label>
+          <input type="tel" placeholder="(000) 000-0000">
+        </div>
+      </div>
+      <div class="form-two">
+        <div class="form-row">
+          <label>Ville de l'immeuble</label>
+          <input type="text" placeholder="St-Hyacinthe, Sherbrooke...">
+        </div>
+        <div class="form-row">
+          <label>Type d'immeuble</label>
+          <select>
+            <option>Triplex</option>
+            <option>Quadruplex</option>
+            <option>Quintuplex</option>
+            <option>6 logements et +</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <label>Détails de l'opportunité</label>
+        <textarea placeholder="Adresse, nombre de logements, prix demandé..."></textarea>
+      </div>
+      <button class="form-submit">Présenter l'opportunité</button>
+      <div class="form-note">Toutes les opportunités sont traitées en toute confidentialité. Réponse sous 48 heures.</div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="logo">Dega <span class="amp">&amp;</span> Co.</div>
+      <div class="footer-tagline">Immobilier locatif au Québec et en Alberta. Logements soignés, gestion attentive, service bilingue.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Locataires</h4>
+      <button onclick="showPage('accueil')">Disponibilités</button>
+      <button onclick="showPage('investir')">Réserver une visite</button>
+      <button onclick="showPage('apropos')">Vivre chez nous</button>
+      <button onclick="showPage('apropos')">Payer mon loyer</button>
+    </div>
+    <div class="footer-col">
+      <h4>Nos villes</h4>
+      <button onclick="showPage('villes')">Saint-Hyacinthe</button>
+      <button onclick="showPage('villes')">Sherbrooke</button>
+      <button onclick="showPage('villes')">Montréal</button>
+      <button onclick="showPage('villes')">Edmonton</button>
+    </div>
+    <div class="footer-col">
+      <h4>Affaires &amp; contact</h4>
+      <button onclick="showPage('vendeurs')">Nous achetons</button>
+      <button onclick="showPage('investir')">Investir avec nous</button>
+      <button onclick="showPage('investir')">info@dega-co.ca</button>
+      <button onclick="showPage('investir')">LinkedIn · Instagram</button>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>© 2026 Dega &amp; Co. Immobilier · Québec &amp; Alberta · Tous droits réservés</div>
+    <div>Maquette de présentation</div>
+  </div>
+</footer>
+
+<script>
+  function showPage(pageId) {
+    // Hide all pages
+    document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+    // Show target
+    var target = document.getElementById('page-' + pageId);
+    if (target) target.classList.add('active');
+    // Update nav active state
+    document.querySelectorAll('.nav-links button').forEach(function(b) { b.classList.remove('active'); });
+    var navBtn = document.querySelector('.nav-links button[data-page="' + pageId + '"]');
+    if (navBtn) navBtn.classList.add('active');
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function filterListings(chip, city) {
+    document.querySelectorAll('.filter-chip').forEach(function(c) { c.classList.remove('active'); });
+    chip.classList.add('active');
+    document.querySelectorAll('.listing').forEach(function(l) {
+      if (city === 'all' || l.getAttribute('data-city') === city) {
+        l.style.display = '';
+      } else {
+        l.style.display = 'none';
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
