@@ -3,364 +3,373 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gestion ImmoDKC — Immobilier locatif · Québec & Alberta</title>
+<title>Gestion ImmoDKC — Immobilier locatif · Rive-Sud & Estrie</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Fraunces:opsz,ital,wght@9..144,0,400;9..144,0,500;9..144,0,600;9..144,1,400;9..144,1,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ink: #1a1612;
-    --paper: #f5f1ea;
-    --paper-warm: #ede5d5;
-    --cream: #faf6ee;
-    --gold: #b8935a;
-    --gold-dark: #8a6c3f;
-    --burgundy: #6b1f2e;
-    --green: #4a6741;
-    --muted: #6b6157;
-    --line: #d4c9b5;
+  :root{
+    --black:#121316; --ink:#17181b; --gold:#c69a44; --gold-2:#b3872f; --gold-soft:#faf3e2;
+    --red:#cf1f2e; --red-dark:#a5111f; --white:#ffffff; --panel:#f6f6f7;
+    --muted:#6a6b70; --line:#e6e6e8; --line-gold:#e7dcc2;
+    /* alias hérités */
+    --paper:#ffffff; --paper-warm:#f6f6f7; --cream:#ffffff; --gold-dark:#b3872f; --burgundy:#cf1f2e; --green:#b3872f;
   }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ font-family:'Manrope',sans-serif; background:var(--white); color:var(--ink); line-height:1.6; font-size:15px; -webkit-font-smoothing:antialiased; }
+  img{ max-width:100%; display:block; }
+  .container{ max-width:1200px; margin:0 auto; padding:0 40px; }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    font-family: 'Manrope', sans-serif;
-    background: var(--paper);
-    color: var(--ink);
-    line-height: 1.6;
-    font-size: 15px;
-  }
-
-  img { max-width: 100%; display: block; }
-
-  .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+  #scroll-progress{ position:fixed; top:0; left:0; height:3px; width:0; z-index:300;
+    background:linear-gradient(90deg,var(--gold),var(--gold-2)); box-shadow:0 0 10px rgba(198,154,68,.55); }
 
   /* HEADER */
-  header {
-    background: var(--paper);
-    border-bottom: 1px solid var(--line);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
+  header{ background:rgba(255,255,255,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--line);
+    position:sticky; top:0; z-index:100; transition:box-shadow .3s; }
+  header::after{ content:""; display:block; height:2px; background:linear-gradient(90deg,var(--gold),transparent 60%); }
+  header.shrink{ box-shadow:0 12px 30px -20px rgba(18,19,22,.5); }
+  nav{ max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center;
+    padding:12px 40px; flex-wrap:wrap; gap:14px; transition:padding .3s; }
+  header.shrink nav{ padding-top:7px; padding-bottom:7px; }
+  .logo-btn{ background:none; border:none; cursor:pointer; padding:0; display:flex; align-items:center; }
+  .logo-img{ height:76px; width:auto; display:block; transition:height .3s; }
+  header.shrink .logo-img{ height:60px; }
+  .nav-links{ display:flex; gap:4px; list-style:none; align-items:center; flex-wrap:wrap; }
+  .nav-links button{ background:none; border:none; color:var(--ink); font-family:inherit; font-size:14px;
+    font-weight:600; cursor:pointer; padding:8px 12px; position:relative; letter-spacing:.01em; transition:color .18s; }
+  .nav-links button::before{ content:""; position:absolute; left:12px; right:12px; bottom:3px; height:2px;
+    background:var(--gold); transform:scaleX(0); transform-origin:left; transition:transform .22s; }
+  .nav-links button:hover{ color:var(--gold-2); }
+  .nav-links button:hover::before{ transform:scaleX(1); }
+  .nav-links button.active{ color:var(--gold-2); font-weight:700; }
+  .nav-links button.active::before{ transform:scaleX(1); }
+  .nav-links button.discreet{ color:var(--muted); font-size:13px; }
+  .nav-links button.discreet:hover{ color:var(--gold-2); }
+  .nav-right{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .lang-toggle{ border:1px solid var(--ink); background:transparent; color:var(--ink); font-family:inherit;
+    font-size:12px; font-weight:700; letter-spacing:.1em; padding:8px 13px; border-radius:2px; cursor:pointer; transition:.18s; }
+  .lang-toggle:hover{ background:var(--ink); color:#fff; }
+  /* CTA locataires actuels — blanc, texte rouge */
+  .nav-cta{ background:var(--white); color:var(--red); border:1px solid var(--red); font-family:inherit;
+    font-size:13px; font-weight:700; letter-spacing:.02em; padding:10px 18px; border-radius:2px; cursor:pointer;
+    white-space:nowrap; box-shadow:0 10px 20px -14px rgba(207,31,46,.45);
+    transition:background .18s,color .18s,transform .15s; }
+  .nav-cta:hover{ background:var(--red); color:#fff; transform:translateY(-2px); }
 
-  nav {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 40px;
-    flex-wrap: wrap;
-    gap: 16px;
-  }
+  /* PAGES */
+  .page{ display:none; padding:64px 0; }
+  .page.active{ display:block; }
+  html[lang="fr"] .lang-en{ display:none; }
+  html[lang="en"] .lang-fr{ display:none; }
 
-  .logo-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    display: flex;
-    align-items: center;
-  }
-  .logo-img { height: 76px; width: auto; display: block; }
-
-  .nav-links {
-    display: flex;
-    gap: 24px;
-    list-style: none;
-    font-size: 14px;
-    align-items: center;
-  }
-
-  .nav-links button {
-    background: none;
-    border: none;
-    color: var(--ink);
-    font-family: inherit;
-    font-size: 14px;
-    cursor: pointer;
-    padding: 6px 0;
-    border-bottom: 2px solid transparent;
-  }
-  .nav-links button:hover { color: var(--burgundy); }
-  .nav-links button.active { border-bottom-color: var(--burgundy); color: var(--burgundy); font-weight: 600; }
-  .nav-links button.discreet { color: var(--muted); font-size: 13px; }
-  .nav-links button.discreet:hover { color: var(--burgundy); }
-
-  .nav-right { display: flex; align-items: center; gap: 16px; }
-
-  .lang-toggle {
-    border: 1px solid var(--ink);
-    padding: 6px 14px;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    cursor: pointer;
-    background: transparent;
-    font-family: inherit;
-    transition: background 0.2s, color 0.2s;
-  }
-  .lang-toggle:hover { background: var(--ink); color: var(--paper); }
-
-  /* CTA locataires actuels — se démarque des onglets de navigation */
-  .nav-cta {
-    background: var(--burgundy); color: #fff; border: 1px solid var(--burgundy);
-    font-family: inherit; font-size: 13px; font-weight: 600; letter-spacing: 0.02em;
-    padding: 8px 16px; cursor: pointer; border-radius: 40px; white-space: nowrap;
-    transition: background 0.2s;
-  }
-  .nav-cta:hover { background: #551828; }
-
-  /* PAGE SECTIONS */
-  .page { display: none; padding: 60px 0; }
-  .page.active { display: block; }
-
-  /* LANG TOGGLE — visibilité pilotée par l'attribut <html lang="..."> */
-  html[lang="fr"] .lang-en { display: none; }
-  html[lang="en"] .lang-fr { display: none; }
+  /* Boutons : brillance au survol */
+  .btn-primary,.btn-secondary,.form-submit,.nav-cta{ position:relative; overflow:hidden; }
+  .btn-primary::after,.btn-secondary::after,.form-submit::after,.nav-cta::after{ content:""; position:absolute;
+    top:0; left:-140%; width:60%; height:100%; background:linear-gradient(120deg,transparent,rgba(255,255,255,.4),transparent);
+    transform:skewX(-18deg); pointer-events:none; }
+  .btn-primary:hover::after,.btn-secondary:hover::after,.form-submit:hover::after,.nav-cta:hover::after{ animation:shine .8s ease; }
+  @keyframes shine{ from{ left:-140% } to{ left:150% } }
 
   /* HERO */
-  .hero {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 50px;
-    align-items: center;
-    margin-bottom: 50px;
-  }
-  .hero-eyebrow {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
-    font-size: 18px;
-    color: var(--gold);
-    margin-bottom: 16px;
-  }
-  .hero-text h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(40px, 4.5vw, 66px);
-    line-height: 1;
-    letter-spacing: -0.03em;
-    margin-bottom: 26px;
-  }
-  .hero-text h1 em { font-style: italic; color: var(--burgundy); }
-  .hero-text p { font-size: 16px; color: var(--muted); max-width: 480px; margin-bottom: 32px; }
-  .hero-cta-row { display: flex; gap: 16px; flex-wrap: wrap; }
-
-  .btn-primary {
-    display: inline-flex; align-items: center; gap: 10px;
-    background: var(--ink); color: var(--paper);
-    padding: 16px 28px; text-decoration: none; border: none; cursor: pointer;
-    font-size: 14px; font-weight: 600; letter-spacing: 0.05em; font-family: inherit;
-  }
-  .btn-secondary {
-    display: inline-flex; align-items: center; gap: 10px;
-    border: 1px solid var(--ink); color: var(--ink); background: none;
-    padding: 15px 28px; text-decoration: none; cursor: pointer;
-    font-size: 14px; font-weight: 600; letter-spacing: 0.05em; font-family: inherit;
-  }
-
-  .hero-image { aspect-ratio: 4/5; overflow: hidden; position: relative; }
-  .hero-image img { width: 100%; height: 100%; object-fit: cover; }
-  .hero-image-overlay {
-    position: absolute; bottom: 20px; left: 20px;
-    background: var(--paper); padding: 12px 18px;
-    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 600;
-  }
+  .hero{ display:grid; grid-template-columns:1.05fr .95fr; gap:56px; align-items:center; margin-bottom:64px; }
+  .hero-eyebrow{ font-family:'Manrope',sans-serif; font-size:12px; font-weight:700; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--gold-2); margin-bottom:20px; display:flex; align-items:center; gap:12px; }
+  .hero-eyebrow::before{ content:""; width:26px; height:1px; background:var(--gold); flex:0 0 auto; }
+  .hero-text h1{ font-family:'DM Serif Display',serif; font-size:clamp(40px,4.6vw,68px); line-height:1.02;
+    letter-spacing:-.03em; margin-bottom:24px; text-wrap:balance; }
+  .hero-text h1 em{ font-family:'Fraunces',serif; font-style:italic; color:var(--gold-2); }
+  .hero-text p{ font-size:16px; color:var(--muted); max-width:480px; margin-bottom:32px; }
+  .hero-cta-row{ display:flex; gap:14px; flex-wrap:wrap; }
+  .btn-primary{ display:inline-flex; align-items:center; gap:9px; background:var(--white); color:var(--red);
+    border:1px solid var(--red); padding:16px 28px; text-decoration:none; cursor:pointer; font-size:14px;
+    font-weight:700; letter-spacing:.03em; font-family:inherit; border-radius:2px;
+    box-shadow:0 12px 24px -16px rgba(207,31,46,.5); transition:background .18s,color .18s,transform .15s,box-shadow .15s; }
+  .btn-primary:hover{ background:var(--red); color:#fff; transform:translateY(-2px); box-shadow:0 16px 28px -14px rgba(207,31,46,.6); }
+  .btn-secondary{ display:inline-flex; align-items:center; gap:9px; border:1px solid var(--ink); color:var(--ink);
+    background:transparent; padding:15px 28px; text-decoration:none; cursor:pointer; font-size:14px; font-weight:700;
+    letter-spacing:.03em; font-family:inherit; border-radius:2px; transition:background .18s,color .18s,transform .15s; }
+  .btn-secondary:hover{ background:var(--ink); color:#fff; transform:translateY(-2px); }
+  .hero-image{ aspect-ratio:4/5; overflow:hidden; position:relative; border-radius:3px; }
+  .hero-image img{ width:100%; height:100%; object-fit:cover; }
+  .hero-image::after{ content:""; position:absolute; inset:0; border:1px solid rgba(198,154,68,.5); pointer-events:none; }
+  .hero-image-overlay{ position:absolute; bottom:20px; left:20px; background:var(--white); padding:12px 18px;
+    font-size:11px; letter-spacing:.15em; text-transform:uppercase; font-weight:700; box-shadow:0 18px 36px -20px rgba(18,19,22,.5); }
 
   /* MARKET SELECTOR */
-  .market-selector { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-bottom: 70px; }
-  .market-card { background: white; border: 1px solid var(--line); padding: 20px; cursor: pointer; transition: transform 0.2s; }
-  .market-card:hover { transform: translateY(-4px); }
-  .market-card.active { border-color: var(--burgundy); border-width: 2px; }
-  .market-flag { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-dark); font-weight: 600; margin-bottom: 8px; }
-  .market-name { font-family: 'DM Serif Display', serif; font-size: 20px; margin-bottom: 12px; letter-spacing: -0.01em; }
-  .market-stat { font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; padding: 5px 0; border-top: 1px solid var(--line); }
-  .market-stat strong { color: var(--ink); }
-  .market-available { margin-top: 10px; font-size: 11px; font-weight: 700; color: var(--green); letter-spacing: 0.05em; }
-  .market-full { margin-top: 10px; font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: 0.05em; }
-
-  /* AVAILABILITY BAR */
-  .availability-bar {
-    background: var(--ink); color: var(--paper);
-    padding: 28px 36px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 50px;
-  }
-  .availability-bar-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.7; }
-  .availability-count { font-family: 'DM Serif Display', serif; font-size: 32px; margin-top: 4px; }
-  .availability-link { color: var(--gold); text-decoration: none; font-size: 14px; font-weight: 600; letter-spacing: 0.05em; background: none; border: none; cursor: pointer; font-family: inherit; }
+  .market-selector{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-bottom:20px; }
+  .market-card{ background:var(--white); border:1px solid var(--line); border-top:2px solid var(--gold); padding:22px;
+    transition:transform .25s, box-shadow .25s, border-color .25s; }
+  .market-card:hover{ transform:translateY(-6px); box-shadow:0 26px 44px -26px rgba(18,19,22,.4); border-color:var(--line-gold); }
+  .market-card.active{ box-shadow:0 26px 44px -28px rgba(18,19,22,.4); }
+  .market-flag{ font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--gold-2); font-weight:700; margin-bottom:10px; }
+  .market-name{ font-family:'DM Serif Display',serif; font-size:21px; margin-bottom:12px; letter-spacing:-.01em; }
+  .market-stat{ font-size:12px; color:var(--muted); display:flex; justify-content:space-between; padding:6px 0; border-top:1px solid var(--line); }
+  .market-stat strong{ color:var(--ink); }
+  .market-available{ margin-top:10px; font-size:11px; font-weight:700; color:var(--gold-2); letter-spacing:.04em; }
+  .market-full{ margin-top:10px; font-size:11px; font-weight:700; color:var(--muted); letter-spacing:.04em; }
 
   /* SECTION HEADERS */
-  .section-header { display: flex; justify-content: space-between; align-items: end; margin-bottom: 36px; flex-wrap: wrap; gap: 20px; }
-  .section-title { font-family: 'DM Serif Display', serif; font-size: 42px; letter-spacing: -0.02em; line-height: 1.05; }
-  .section-title em { font-style: italic; color: var(--burgundy); }
-  .section-subtitle { color: var(--muted); font-size: 15px; margin-top: 8px; }
-  .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; }
-  .filter-chip { padding: 8px 16px; background: white; border: 1px solid var(--line); font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit; }
-  .filter-chip.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
-
-  /* LISTINGS */
-  .listings-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
-  .listing { background: white; border: 1px solid var(--line); overflow: hidden; transition: transform 0.2s; cursor: pointer; }
-  .listing:hover { transform: translateY(-4px); }
-  .listing-image { aspect-ratio: 4/3; position: relative; overflow: hidden; }
-  .listing-image img { width: 100%; height: 100%; object-fit: cover; }
-  .badge { position: absolute; top: 14px; left: 14px; padding: 5px 11px; font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; z-index: 2; }
-  .badge.available { background: var(--green); color: white; }
-  .badge.soon { background: var(--gold); color: var(--ink); }
-  .badge.rented { background: var(--muted); color: white; }
-  .badge-market { position: absolute; top: 14px; right: 14px; padding: 5px 11px; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; background: rgba(26,22,18,0.85); color: white; z-index: 2; }
-  .listing-body { padding: 22px; }
-  .listing-address { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 600; margin-bottom: 4px; letter-spacing: -0.01em; }
-  .listing-neighborhood { font-size: 12px; color: var(--muted); margin-bottom: 18px; text-transform: uppercase; letter-spacing: 0.12em; }
-  .listing-details { display: flex; gap: 18px; font-size: 13px; margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
-  .listing-details span { color: var(--muted); }
-  .listing-details strong { color: var(--ink); font-weight: 600; }
-  .listing-footer { display: flex; justify-content: space-between; align-items: center; }
-  .listing-price { font-family: 'DM Serif Display', serif; font-size: 26px; }
-  .listing-price span { font-size: 12px; color: var(--muted); font-family: 'Manrope', sans-serif; }
-  .listing-date { font-size: 12px; color: var(--green); font-weight: 600; letter-spacing: 0.05em; }
-  .listing-date.now { color: var(--burgundy); }
-
-  /* DETAIL */
-  .detail-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; margin-top: 30px; }
-  .gallery-main { aspect-ratio: 16/10; overflow: hidden; margin-bottom: 8px; }
-  .gallery-main img { width: 100%; height: 100%; object-fit: cover; cursor: zoom-in; }
-  .gallery-thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-  .gallery-thumb { aspect-ratio: 1/1; overflow: hidden; cursor: pointer; border: 2px solid transparent; transition: border-color 0.2s; }
-  .gallery-thumb:hover, .gallery-thumb.active { border-color: var(--burgundy); }
-  .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; }
-  .detail-info { display: flex; flex-direction: column; gap: 20px; }
-  .detail-header h2 { font-family: 'DM Serif Display', serif; font-size: 34px; margin-bottom: 6px; letter-spacing: -0.02em; line-height: 1.05; }
-  .detail-meta { color: var(--muted); font-size: 14px; margin-bottom: 6px; }
-  .detail-desc { font-size: 14px; color: var(--muted); line-height: 1.7; }
-  .price-block { background: var(--ink); color: var(--paper); padding: 26px; }
-  .price-block-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.6; margin-bottom: 6px; }
-  .price-block-amount { font-family: 'DM Serif Display', serif; font-size: 42px; line-height: 1; }
-  .price-block-amount span { font-size: 13px; opacity: 0.6; font-family: 'Manrope', sans-serif; }
-  .price-block-available { font-size: 13px; margin-top: 12px; color: var(--gold); font-weight: 600; }
-  .inclusions { background: var(--paper-warm); padding: 22px; }
-  .inclusions-title { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; font-weight: 600; }
-  .inclusions-list { list-style: none; font-size: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .inclusions-list li::before { content: "✓"; color: var(--green); font-weight: 700; margin-right: 8px; }
-  .visit-cta {
-    background: var(--burgundy); color: white; padding: 18px; text-align: center;
-    font-weight: 600; letter-spacing: 0.05em; text-decoration: none; display: block;
-    font-size: 15px; border: none; cursor: pointer; font-family: inherit;
-    transition: background 0.2s;
-  }
-  .visit-cta:hover { background: #551828; }
-  .back-link { background: none; border: none; color: var(--muted); font-size: 13px; cursor: pointer; font-family: inherit; letter-spacing: 0.05em; margin-bottom: 16px; padding: 0; }
-  .back-link:hover { color: var(--burgundy); }
+  .section-header{ display:flex; justify-content:space-between; align-items:end; margin-bottom:40px; flex-wrap:wrap; gap:20px; }
+  .section-title{ font-family:'DM Serif Display',serif; font-size:clamp(30px,3.6vw,44px); letter-spacing:-.02em; line-height:1.05; text-wrap:balance; }
+  .section-title em{ font-family:'Fraunces',serif; font-style:italic; color:var(--gold-2); }
+  .section-subtitle{ color:var(--muted); font-size:15px; margin-top:10px; }
 
   /* DIFFERENTIATORS */
-  .differentiators { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; padding: 40px 0; }
-  .diff-item { border-top: 2px solid var(--ink); padding-top: 24px; }
-  .diff-number { font-family: 'Fraunces', serif; font-size: 13px; color: var(--burgundy); letter-spacing: 0.15em; margin-bottom: 14px; font-style: italic; }
-  .diff-title { font-family: 'DM Serif Display', serif; font-size: 24px; margin-bottom: 10px; letter-spacing: -0.01em; }
-  .diff-text { font-size: 14px; color: var(--muted); }
+  .differentiators{ display:grid; grid-template-columns:repeat(3,1fr); gap:36px; padding:48px 0 8px; }
+  .diff-item{ border-top:2px solid var(--gold); padding-top:22px; transition:transform .2s; }
+  .diff-item:hover{ transform:translateY(-4px); }
+  .diff-number{ font-family:'Fraunces',serif; font-size:13px; color:var(--gold-2); letter-spacing:.14em; margin-bottom:12px; font-style:italic; }
+  .diff-title{ font-family:'DM Serif Display',serif; font-size:23px; margin-bottom:9px; letter-spacing:-.01em; }
+  .diff-text{ font-size:14px; color:var(--muted); }
 
-  /* ABOUT INTRO */
-  .about-intro { max-width: 760px; margin: 0 auto 30px; text-align: center; }
-  .about-intro .quote-mark { font-family: 'DM Serif Display', serif; font-size: 90px; color: var(--gold); line-height: 0.6; }
-  .about-intro h3 { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 30px; line-height: 1.35; margin-bottom: 24px; }
-  .about-signature { font-family: 'Fraunces', serif; font-style: italic; font-size: 20px; color: var(--burgundy); }
-  .about-role { font-size: 11px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--muted); margin-top: 4px; }
+  /* ABOUT */
+  .about-intro{ max-width:760px; margin:0 auto 30px; text-align:center; }
+  .about-intro .quote-mark{ font-family:'DM Serif Display',serif; font-size:90px; color:var(--gold); line-height:0.6; }
+  .about-intro h3{ font-family:'Fraunces',serif; font-style:italic; font-size:30px; line-height:1.4; margin-bottom:24px; text-wrap:balance; }
+  .about-signature{ font-family:'Fraunces',serif; font-style:italic; font-size:20px; color:var(--gold-2); }
+  .about-role{ font-size:11px; text-transform:uppercase; letter-spacing:.18em; color:var(--muted); margin-top:4px; }
 
   /* TESTIMONIALS */
-  .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin: 50px 0 0; }
-  .testimonial-card { background: white; padding: 32px; border-top: 3px solid var(--burgundy); }
-  .testimonial-quote { font-family: 'Fraunces', serif; font-style: italic; font-size: 17px; line-height: 1.5; margin-bottom: 20px; }
-  .testimonial-attribution { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  .testimonials-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:26px; margin:52px 0 0; }
+  .testimonial-card{ background:var(--white); border:1px solid var(--line); border-top:3px solid var(--gold);
+    padding:30px 28px; transition:border-color .2s, transform .2s, box-shadow .2s; }
+  .testimonial-card:hover{ transform:translateY(-4px); box-shadow:0 26px 44px -30px rgba(18,19,22,.35); }
+  .testimonial-quote{ font-family:'Fraunces',serif; font-style:italic; font-size:17px; line-height:1.5; margin-bottom:20px; }
+  .testimonial-attribution{ font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); font-weight:700; }
 
-  /* CITIES PAGE */
-  .city-block { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; margin-bottom: 50px; padding-bottom: 50px; border-bottom: 1px solid var(--line); }
-  .city-block:nth-child(even) .city-image { order: 2; }
-  .city-image { aspect-ratio: 16/11; overflow: hidden; }
-  .city-image img { width: 100%; height: 100%; object-fit: cover; }
-  .city-info h3 { font-family: 'DM Serif Display', serif; font-size: 34px; letter-spacing: -0.02em; margin-bottom: 6px; }
-  .city-flag { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-dark); font-weight: 600; margin-bottom: 10px; }
-  .city-info p { color: var(--muted); font-size: 15px; margin-bottom: 18px; }
-  .city-facts { display: flex; gap: 30px; }
-  .city-fact-num { font-family: 'DM Serif Display', serif; font-size: 26px; }
-  .city-fact-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+  /* CITIES */
+  .city-block{ display:grid; grid-template-columns:1fr 1fr; gap:44px; align-items:center; margin-bottom:52px; padding-bottom:52px; border-bottom:1px solid var(--line); }
+  .city-block:nth-child(even) .city-image{ order:2; }
+  .city-image{ aspect-ratio:16/11; overflow:hidden; border-radius:3px; position:relative; }
+  .city-image::after{ content:""; position:absolute; inset:0; border:1px solid rgba(198,154,68,.4); pointer-events:none; }
+  .city-image img{ width:100%; height:100%; object-fit:cover; transition:transform .5s; }
+  .city-block:hover .city-image img{ transform:scale(1.05); }
+  .city-info h3{ font-family:'DM Serif Display',serif; font-size:34px; letter-spacing:-.02em; margin-bottom:6px; }
+  .city-flag{ font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--gold-2); font-weight:700; margin-bottom:10px; }
+  .city-info p{ color:var(--muted); font-size:15px; margin-bottom:18px; }
+  .city-facts{ display:flex; gap:30px; }
+  .city-fact-num{ font-family:'DM Serif Display',serif; font-size:26px; }
+  .city-fact-label{ font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); }
 
-  /* BUSINESS / CONTACT FORM */
-  .form-wrap { max-width: 640px; margin: 0 auto; }
-  .form-intro { text-align: center; margin-bottom: 36px; }
-  .form-row { margin-bottom: 20px; }
-  .form-row label { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); font-weight: 600; margin-bottom: 8px; }
-  .form-row input, .form-row select, .form-row textarea {
-    width: 100%; padding: 13px 16px; border: 1px solid var(--line); background: white;
-    font-family: inherit; font-size: 15px; color: var(--ink);
-  }
-  .form-row textarea { resize: vertical; min-height: 120px; }
-  .form-two { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  .form-submit { background: var(--ink); color: var(--paper); border: none; padding: 16px 32px; font-family: inherit; font-size: 14px; font-weight: 600; letter-spacing: 0.05em; cursor: pointer; width: 100%; }
-  .form-note { font-size: 12px; color: var(--muted); text-align: center; margin-top: 16px; }
-  .audience-eyebrow { font-family: 'Fraunces', serif; font-style: italic; font-size: 13px; color: var(--gold-dark); margin-bottom: 10px; }
+  /* FORMS */
+  .form-wrap{ max-width:640px; margin:0 auto; }
+  .form-intro{ text-align:center; margin-bottom:36px; }
+  .form-row{ margin-bottom:20px; }
+  .form-row label{ display:block; font-size:12px; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); font-weight:700; margin-bottom:8px; }
+  .form-row input,.form-row select,.form-row textarea{ width:100%; padding:13px 16px; border:1px solid var(--line);
+    background:var(--white); font-family:inherit; font-size:15px; color:var(--ink); border-radius:2px; }
+  .form-row input:focus,.form-row select:focus,.form-row textarea:focus{ outline:2px solid var(--gold); outline-offset:0; }
+  .form-row textarea{ resize:vertical; min-height:120px; }
+  .form-two{ display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .form-submit{ background:var(--white); color:var(--red); border:1px solid var(--red); padding:16px 32px; font-family:inherit;
+    font-size:14px; font-weight:700; letter-spacing:.04em; cursor:pointer; width:100%; border-radius:2px;
+    box-shadow:0 12px 24px -16px rgba(207,31,46,.5); transition:background .18s,color .18s,transform .15s; }
+  .form-submit:hover{ background:var(--red); color:#fff; transform:translateY(-2px); }
+  .form-note{ font-size:12px; color:var(--muted); text-align:center; margin-top:16px; }
+  .audience-eyebrow{ font-family:'Fraunces',serif; font-style:italic; font-size:13px; color:var(--gold-2); margin-bottom:10px; }
 
-  /* SERVICE REQUEST / APPEL DE SERVICE */
-  .emergency {
-    background: #fdecea; color: var(--ink);
-    border: 1px solid #b3261e; border-radius: 10px;
-    padding: 18px 22px; margin-bottom: 32px; font-size: 14px;
-  }
-  .emergency strong { color: #b3261e; }
-  .emergency a { color: #b3261e; font-weight: 700; white-space: nowrap; }
-  .form-row input:focus, .form-row select:focus, .form-row textarea:focus { outline: 2px solid var(--gold); outline-offset: 0; }
-  .hint { font-size: 12px; color: var(--muted); margin-top: -4px; margin-bottom: 8px; }
-  fieldset { border: 0; margin-bottom: 20px; }
-  fieldset legend { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); font-weight: 600; margin-bottom: 8px; }
-  .choices { display: flex; flex-direction: column; gap: 8px; }
-  .choice { display: flex; align-items: flex-start; gap: 10px; border: 1px solid var(--line); background: #fff; padding: 12px 14px; cursor: pointer; font-size: 14px; }
-  .choice input { margin-top: 4px; accent-color: var(--gold-dark); }
-  .choice small { display: block; color: var(--muted); }
+  /* SERVICE REQUEST */
+  .emergency{ background:#fdecea; color:var(--ink); border:1px solid #b3261e; border-radius:10px; padding:18px 22px; margin-bottom:32px; font-size:14px; }
+  .emergency strong{ color:#b3261e; }
+  .emergency a{ color:#b3261e; font-weight:700; white-space:nowrap; }
+  .hint{ font-size:12px; color:var(--muted); margin-top:-4px; margin-bottom:8px; }
+  fieldset{ border:0; margin-bottom:20px; }
+  fieldset legend{ display:block; font-size:12px; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); font-weight:700; margin-bottom:8px; }
+  .choices{ display:flex; flex-direction:column; gap:8px; }
+  .choice{ display:flex; align-items:flex-start; gap:10px; border:1px solid var(--line); background:var(--white); padding:12px 14px; cursor:pointer; font-size:14px; border-radius:2px; transition:border-color .15s; }
+  .choice:hover{ border-color:var(--gold); }
+  .choice input{ margin-top:4px; accent-color:var(--red); }
+  .choice small{ display:block; color:var(--muted); }
 
   /* FOOTER */
-  footer { background: var(--ink); color: var(--paper); padding: 70px 40px 30px; }
-  .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
-  .footer-logo-img { height: 64px; width: auto; margin-bottom: 12px; }
-  .footer-tagline { opacity: 0.6; font-size: 13px; max-width: 280px; }
-  .footer-col h4 { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 16px; color: var(--gold); }
-  .footer-col button { display: block; color: var(--paper); text-decoration: none; font-size: 13px; opacity: 0.7; margin-bottom: 8px; background: none; border: none; cursor: pointer; font-family: inherit; text-align: left; padding: 0; }
-  .footer-col button:hover { opacity: 1; }
-  .footer-bottom { max-width: 1200px; margin: 0 auto; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px; font-size: 11px; opacity: 0.5; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+  footer{ background:var(--black); color:#fff; padding:70px 40px 30px; border-top:2px solid var(--gold); }
+  .footer-grid{ max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr; gap:40px; margin-bottom:40px; }
+  .footer-logo-img{ height:69px; width:auto; margin-bottom:14px; }
+  .footer-tagline{ opacity:.6; font-size:13px; max-width:280px; }
+  .footer-col h4{ font-size:11px; letter-spacing:.15em; text-transform:uppercase; margin-bottom:16px; color:var(--gold); }
+  .footer-col button{ display:block; color:#fff; text-decoration:none; font-size:13.5px; opacity:.72; margin-bottom:9px;
+    background:none; border:none; cursor:pointer; font-family:inherit; text-align:left; padding:0; transition:opacity .15s,color .15s; }
+  .footer-col button:hover{ opacity:1; color:var(--gold); }
+  .footer-bottom{ max-width:1200px; margin:0 auto; border-top:1px solid rgba(255,255,255,.1); padding-top:22px; font-size:11.5px; opacity:.5; display:flex; justify-content:space-between; flex-wrap:wrap; gap:16px; }
 
-  @media (max-width: 1100px) {
-    .market-selector { grid-template-columns: repeat(3, 1fr); }
+  /* ANIMATIONS d'entrée (au changement d'onglet) */
+  @media (prefers-reduced-motion: no-preference){
+    .page.active:not(#page-accueil) > *{ animation:rise .7s cubic-bezier(.16,.7,.2,1) both; }
+    .page.active:not(#page-accueil) > *:nth-child(1){ animation-delay:.03s }
+    .page.active:not(#page-accueil) > *:nth-child(2){ animation-delay:.11s }
+    .page.active:not(#page-accueil) > *:nth-child(3){ animation-delay:.19s }
+    .page.active:not(#page-accueil) > *:nth-child(4){ animation-delay:.27s }
+    .page.active:not(#page-accueil) > *:nth-child(5){ animation-delay:.35s }
+    .page.active:not(#page-accueil) > *:nth-child(n+6){ animation-delay:.42s }
   }
-  @media (max-width: 900px) {
-    .hero, .listings-grid, .differentiators, .testimonials-grid, .footer-grid, .detail-grid, .city-block, .form-two { grid-template-columns: 1fr; }
-    .market-selector { grid-template-columns: repeat(2, 1fr); }
-    .city-block:nth-child(even) .city-image { order: 0; }
-    .container { padding: 0 20px; }
-    nav { padding: 8px 20px; }
-    .section-title { font-size: 32px; }
-    .gallery-thumbs { grid-template-columns: repeat(4, 1fr); }
+  @keyframes rise{ from{ opacity:0; transform:translateY(26px) } to{ opacity:1; transform:none } }
+  @media (prefers-reduced-motion: reduce){
+    .btn-primary::after,.btn-secondary::after,.form-submit::after,.nav-cta::after{ display:none; }
   }
-  @media (max-width: 600px) {
-    .market-selector { grid-template-columns: 1fr 1fr; }
+
+  @media (max-width:1100px){ .market-selector{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:900px){
+    .hero,.differentiators,.testimonials-grid,.footer-grid,.city-block,.form-two{ grid-template-columns:1fr; }
+    .market-selector{ grid-template-columns:repeat(2,1fr); }
+    .city-block:nth-child(even) .city-image{ order:0; }
+    .container{ padding:0 20px; }
+    nav{ padding:8px 20px; }
+    .page{ padding:44px 0; }
   }
+  @media (max-width:600px){ .market-selector{ grid-template-columns:1fr 1fr; } }
+
+  /* ===================== SECTIONS MAQUETTE ===================== */
+  html{ overflow-x:clip; }
+  .serif{ font-family:'DM Serif Display',serif; }
+  .fullbleed{ width:100vw; margin-left:calc(50% - 50vw); margin-right:calc(50% - 50vw); }
+
+  /* Menus déroulants */
+  .nav-links > li{ position:relative; }
+  .nav-links > li.has-dd > button::after{ content:"▾"; font-size:10px; opacity:.5; margin-left:5px; transition:transform .2s; }
+  .nav-links > li.has-dd:hover > button::after{ transform:rotate(180deg); }
+  .dropdown{ position:absolute; top:100%; left:0; min-width:246px; background:var(--white); border:1px solid var(--line);
+    border-top:2px solid var(--gold); box-shadow:0 22px 44px -20px rgba(18,19,22,.4); padding:8px; opacity:0; visibility:hidden;
+    transform:translateY(8px); transition:.2s; z-index:120; }
+  .nav-links > li.has-dd:hover .dropdown{ opacity:1; visibility:visible; transform:translateY(2px); }
+  .dropdown a{ display:flex; flex-direction:column; gap:2px; padding:11px 13px; text-decoration:none; cursor:pointer; transition:background .15s; }
+  .dropdown a:hover{ background:var(--gold-soft); }
+  .dropdown a b{ font-size:14px; font-weight:700; color:var(--ink); }
+  .dropdown a span{ font-size:12px; color:var(--muted); font-weight:400; }
+  .dropdown a.tenant b{ color:var(--red); }
+
+  /* Hamburger + panneau mobile */
+  .hamburger{ display:none; background:none; border:none; cursor:pointer; padding:8px; }
+  .hamburger span{ display:block; width:24px; height:2px; background:var(--ink); margin:5px 0; transition:.25s; }
+  .mobile-panel{ display:none; }
+
+  /* Eyebrow + en-têtes de section centrés */
+  .eyebrow{ font-family:'Manrope',sans-serif; font-size:12px; font-weight:700; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--gold-2); display:inline-flex; align-items:center; gap:12px; }
+  .eyebrow::before,.eyebrow.center::after{ content:""; width:26px; height:1px; background:var(--gold); display:inline-block; }
+  .eyebrow.center{ justify-content:center; }
+  .sec-head{ text-align:center; max-width:680px; margin:0 auto 46px; }
+  .sec-head .eyebrow{ margin-bottom:14px; }
+  .sec-head .section-subtitle{ margin-top:14px; }
+  .center-cta{ text-align:center; margin-top:34px; }
+
+  /* Média du héros */
+  .hero-media{ position:relative; }
+  .hero-media .imgwrap{ position:relative; border-radius:3px; overflow:hidden; }
+  .hero-media img{ width:100%; aspect-ratio:4/4.6; object-fit:cover; }
+  .hero-media .imgwrap::after{ content:""; position:absolute; inset:0; border:1px solid rgba(198,154,68,.5); pointer-events:none; }
+  .hero-media .gold-corner{ position:absolute; top:-12px; right:-12px; width:78px; height:78px; border-top:2px solid var(--gold); border-right:2px solid var(--gold); }
+  .hero-media .gold-corner.bl{ top:auto; right:auto; bottom:-12px; left:-12px; border-top:0; border-right:0; border-bottom:2px solid var(--gold); border-left:2px solid var(--gold); }
+  .hero-media .float-tag{ position:absolute; right:0; top:24px; background:var(--black); color:var(--gold); font-size:11px; font-weight:700;
+    letter-spacing:.16em; text-transform:uppercase; padding:10px 15px; z-index:2; }
+  .hero-badge{ position:absolute; left:-24px; bottom:36px; background:var(--white); border:1px solid var(--line); border-left:3px solid var(--red);
+    padding:15px 20px; box-shadow:0 24px 46px -22px rgba(18,19,22,.5); display:flex; align-items:center; gap:13px; }
+  .hero-badge .dot{ width:11px; height:11px; border-radius:50%; background:var(--red); box-shadow:0 0 0 5px rgba(207,31,46,.16); animation:pulse 2s infinite; }
+  @keyframes pulse{ 0%{box-shadow:0 0 0 0 rgba(207,31,46,.32)} 70%{box-shadow:0 0 0 12px rgba(207,31,46,0)} 100%{box-shadow:0 0 0 0 rgba(207,31,46,0)} }
+  .hero-badge .num{ font-family:'DM Serif Display',serif; font-size:22px; line-height:1; }
+  .hero-badge .lbl{ font-size:10.5px; text-transform:uppercase; letter-spacing:.14em; color:var(--muted); }
+  .trust{ display:flex; align-items:center; gap:9px; margin-top:22px; font-size:13px; color:var(--muted); }
+  .stars{ color:var(--gold); letter-spacing:1px; }
+
+  /* Statistiques (bandeau noir) */
+  .stats{ background:var(--black); color:#fff; padding:46px 40px; display:grid; grid-template-columns:repeat(4,1fr); gap:20px;
+    border-top:2px solid var(--gold); margin-top:32px; margin-bottom:32px; }
+  .stat{ text-align:center; position:relative; }
+  .stat .n{ font-family:'DM Serif Display',serif; font-size:46px; line-height:1; color:var(--gold); }
+  .stat .c{ font-size:12px; letter-spacing:.16em; text-transform:uppercase; opacity:.72; margin-top:10px; }
+  .stat + .stat::before{ content:""; position:absolute; left:-10px; top:14%; height:72%; width:1px; background:rgba(198,154,68,.28); }
+
+  /* Bandeau défilant des villes */
+  .marquee{ overflow:hidden; background:var(--gold-soft); border-top:1px solid var(--line-gold); border-bottom:1px solid var(--line-gold); margin-bottom:56px; }
+  .marquee .track{ display:flex; width:max-content; animation:marquee 26s linear infinite; }
+  .marquee .track span{ display:inline-flex; align-items:center; gap:34px; padding:14px 0; padding-right:34px;
+    font-family:'DM Serif Display',serif; font-size:19px; color:var(--gold-2); white-space:nowrap; }
+  .marquee:hover .track{ animation-play-state:paused; }
+  @keyframes marquee{ from{ transform:translateX(0) } to{ transform:translateX(-50%) } }
+
+  /* Louer en 3 étapes */
+  .steps{ display:grid; grid-template-columns:repeat(3,1fr); gap:28px; margin-bottom:20px; }
+  .step{ text-align:center; padding:16px 22px; cursor:pointer; border-radius:6px; transition:transform .2s; }
+  .step:hover{ transform:translateY(-5px); }
+  .step:hover .ico{ border-color:var(--gold); box-shadow:0 10px 20px -10px rgba(198,154,68,.55); }
+  .step:hover h4{ color:var(--gold-2); }
+  .step .ico{ width:76px; height:76px; border-radius:50%; margin:0 auto 20px; display:flex; align-items:center; justify-content:center;
+    font-size:30px; background:var(--gold-soft); border:1px solid var(--line-gold); position:relative; }
+  .step .ico b{ position:absolute; right:-4px; top:-4px; width:26px; height:26px; border-radius:50%; background:var(--black); color:var(--gold);
+    font-family:'Fraunces',serif; font-size:12px; font-style:italic; display:flex; align-items:center; justify-content:center; }
+  .step h4{ font-family:'DM Serif Display',serif; font-size:22px; margin-bottom:9px; }
+  .step p{ font-size:14px; color:var(--muted); max-width:280px; margin:0 auto; }
+
+  /* Bande CTA (locataires actuels) */
+  .cta-band{ background:var(--black); color:#fff; padding:66px 40px; text-align:center; position:relative; overflow:hidden;
+    border-top:2px solid var(--gold); margin-top:64px; }
+  .cta-band .eyebrow{ color:var(--gold); margin-bottom:16px; }
+  .cta-band h2{ font-family:'DM Serif Display',serif; font-size:clamp(30px,3.6vw,46px); margin-bottom:14px; line-height:1.08; }
+  .cta-band h2 em{ font-family:'Fraunces',serif; font-style:italic; color:var(--gold); }
+  .cta-band p{ opacity:.78; max-width:520px; margin:0 auto 30px; }
+
+  /* Reveals au scroll */
+  .reveal{ opacity:0; transform:translateY(30px); transition:opacity .8s cubic-bezier(.16,.7,.2,1), transform .8s cubic-bezier(.16,.7,.2,1); will-change:opacity,transform; }
+  .reveal.from-left{ transform:translateX(-46px); }
+  .reveal.from-right{ transform:translateX(46px); }
+  .reveal.in{ opacity:1; transform:none; }
+  .reveal.d1{ transition-delay:.1s } .reveal.d2{ transition-delay:.2s } .reveal.d3{ transition-delay:.3s }
+  .no-io .reveal{ opacity:1 !important; transform:none !important; }
+  @media (prefers-reduced-motion: reduce){ .reveal{ opacity:1 !important; transform:none !important; } .marquee .track{ animation:none; } }
+
+  @media (max-width:960px){
+    .nav-links{ display:none; }
+    .hamburger{ display:block; }
+    .mobile-panel.open{ display:block; background:var(--white); border-bottom:1px solid var(--line); padding:10px 22px 20px; }
+    .mobile-panel a{ display:block; padding:12px 6px; border-bottom:1px solid var(--line); text-decoration:none; font-weight:600; cursor:pointer; color:var(--ink); }
+    .mobile-panel a.tenant{ color:var(--red); }
+    .stats{ grid-template-columns:1fr 1fr; gap:28px; }
+    .stat + .stat:nth-child(3)::before{ display:none; }
+    .steps{ grid-template-columns:1fr; }
+    .hero-badge{ left:12px; }
+  }
+  @media (max-width:560px){ .stats{ grid-template-columns:1fr 1fr; } }
 </style>
 </head>
 <body>
+<div id="scroll-progress"></div>
 
 <!-- ============ HEADER ============ -->
 <header>
   <nav>
     <button class="logo-btn" onclick="showPage('accueil')">
-      <img class="logo-img" src="https://raw.githubusercontent.com/StartupSIP/gestionDKC/refs/heads/main/Logo/Logo_black.png" alt="Gestion ImmoDKC">
+      <img class="logo-img" src="https://raw.githubusercontent.com/StartupSIP/gestionDKC/refs/heads/main/Logo/Logo_white.png" alt="Gestion ImmoDKC">
     </button>
     <ul class="nav-links">
       <li><button data-page="accueil" class="active" onclick="showPage('accueil')" data-fr="Disponibilités" data-en="Availability">Disponibilités</button></li>
+      <li class="has-dd">
+        <button type="button" data-fr="Locataires" data-en="Tenants">Locataires</button>
+        <div class="dropdown">
+          <a class="tenant" tabindex="0" onclick="showPage('entretien')"><b data-fr="Appel de service" data-en="Service request">Appel de service</b><span data-fr="Demande d'entretien" data-en="Maintenance request">Demande d'entretien</span></a>
+          <a tabindex="0" onclick="showPage('apropos')"><b data-fr="Vivre chez nous" data-en="Living with us">Vivre chez nous</b><span data-fr="Nos engagements" data-en="Our commitments">Nos engagements</span></a>
+          <a tabindex="0" onclick="window.open('https://calendly.com/gostartupsip/30min','_blank')"><b data-fr="Réserver une visite" data-en="Book a visit">Réserver une visite</b><span data-fr="En ligne, en quelques clics" data-en="Online, in a few clicks">En ligne, en quelques clics</span></a>
+        </div>
+      </li>
       <li><button data-page="villes" onclick="showPage('villes')" data-fr="Nos villes" data-en="Our Cities">Nos villes</button></li>
-      <li><button data-page="apropos" onclick="showPage('apropos')" data-fr="Vivre chez nous" data-en="Living With Us">Vivre chez nous</button></li>
-      <li><button data-page="investir" class="discreet" onclick="showPage('investir')" data-fr="Investir" data-en="Invest">Investir</button></li>
-      <li><button data-page="vendeurs" class="discreet" onclick="showPage('vendeurs')" data-fr="Vendeurs" data-en="Sellers">Vendeurs</button></li>
+      <li class="has-dd">
+        <button type="button" data-fr="Affaires" data-en="Business">Affaires</button>
+        <div class="dropdown">
+          <a tabindex="0" onclick="showPage('investir')"><b data-fr="Investir avec nous" data-en="Invest with us">Investir avec nous</b><span data-fr="Partenariats d'investissement" data-en="Investment partnerships">Partenariats d'investissement</span></a>
+          <a tabindex="0" onclick="showPage('vendeurs')"><b data-fr="Vendeurs &amp; courtiers" data-en="Sellers &amp; brokers">Vendeurs &amp; courtiers</b><span data-fr="Nous achetons des immeubles" data-en="We buy buildings">Nous achetons des immeubles</span></a>
+        </div>
+      </li>
     </ul>
     <div class="nav-right">
-      <!-- CTA distinct : réservé aux locataires actuels -->
-      <button class="nav-cta" data-page="entretien" onclick="showPage('entretien')" data-fr="Locataires · Appel de service" data-en="Tenants · Service request">Locataires · Appel de service</button>
       <button class="lang-toggle" onclick="toggleLang()">EN</button>
+      <button class="nav-cta" data-page="entretien" onclick="showPage('entretien')" data-fr="Appel de service" data-en="Service request">Appel de service</button>
+      <button class="hamburger" id="burger" aria-label="Menu" type="button"><span></span><span></span><span></span></button>
     </div>
   </nav>
+  <div class="mobile-panel" id="mpanel">
+    <a onclick="showPage('accueil')" data-fr="Disponibilités" data-en="Availability">Disponibilités</a>
+    <a class="tenant" onclick="showPage('entretien')" data-fr="Appel de service (locataires)" data-en="Service request (tenants)">Appel de service (locataires)</a>
+    <a onclick="showPage('apropos')" data-fr="Vivre chez nous" data-en="Living with us">Vivre chez nous</a>
+    <a onclick="showPage('villes')" data-fr="Nos villes" data-en="Our Cities">Nos villes</a>
+    <a onclick="showPage('investir')" data-fr="Investir avec nous" data-en="Invest with us">Investir avec nous</a>
+    <a onclick="showPage('vendeurs')" data-fr="Vendeurs &amp; courtiers" data-en="Sellers &amp; brokers">Vendeurs &amp; courtiers</a>
+  </div>
 </header>
 
 <div class="container">
@@ -368,80 +377,142 @@
   <!-- ============ PAGE: ACCUEIL / DISPONIBILITÉS ============ -->
   <section class="page active" id="page-accueil">
     <div class="hero">
-      <div class="hero-text">
-        <div class="hero-eyebrow lang-fr">Saint-Hyacinthe · Longueuil · Sherbrooke · Drummondville · Edmonton</div>
-        <div class="hero-eyebrow lang-en">Saint-Hyacinthe · Longueuil · Sherbrooke · Drummondville · Edmonton</div>
-
-        <div class="lang-fr">
-          <h1>Un chez-soi <em>bien géré</em>, où que vous soyez.</h1>
-        </div>
-        <div class="lang-en">
-          <h1>A <em>well-managed</em> home, wherever you are.</h1>
-        </div>
-
-        <p class="lang-fr">Gestion ImmoDKC détient et gère des logements soignés au Québec et en Alberta. Réponses rapides, entretien attentif, et le même standard de qualité dans chaque ville.</p>
-        <p class="lang-en">Gestion ImmoDKC owns and manages quality rental properties in Québec and Alberta. Fast responses, attentive maintenance, and the same high standard in every city.</p>
-
+      <div class="hero-text reveal from-left">
+        <div class="hero-eyebrow lang-fr">Saint-Hyacinthe · Longueuil · Sherbrooke · Drummondville</div>
+        <div class="hero-eyebrow lang-en">Saint-Hyacinthe · Longueuil · Sherbrooke · Drummondville</div>
+        <div class="lang-fr"><h1>Un chez-soi <em>bien géré</em>, où que vous soyez.</h1></div>
+        <div class="lang-en"><h1>A <em>well-managed</em> home, wherever you are.</h1></div>
+        <p class="lang-fr">Gestion ImmoDKC détient et gère des logements soignés sur la Rive-Sud et en Estrie. Réponses rapides, entretien attentif, et le même standard de qualité dans chaque ville.</p>
+        <p class="lang-en">Gestion ImmoDKC owns and manages quality rental properties in the South Shore and Estrie regions. Fast responses, attentive maintenance, and the same high standard in every city.</p>
         <div class="hero-cta-row">
           <button class="btn-primary" onclick="openRentals()" data-fr="Voir les logements disponibles →" data-en="View available units →">Voir les logements disponibles →</button>
           <button class="btn-secondary" onclick="showPage('apropos')" data-fr="Nos engagements" data-en="Our commitments">Nos engagements</button>
         </div>
+        <div class="trust"><span class="stars">★★★★★</span> <span class="lang-fr">Noté 5/5 par nos locataires · service bilingue</span><span class="lang-en">Rated 5/5 by our tenants · bilingual service</span></div>
       </div>
-      <div class="hero-image">
-        <img src="https://raw.githubusercontent.com/StartupSIP/gestionDKC/refs/heads/main/Photos/1100%20boulle/1.%201110%20ave%20boulle/Cuisine.jpeg" alt="Intérieur — Gestion ImmoDKC">
-        <div class="hero-image-overlay" data-fr="Saint-Hyacinthe · Av. Boulle" data-en="Saint-Hyacinthe · Boulle Ave.">Saint-Hyacinthe · Av. Boulle</div>
+      <div class="hero-media reveal from-right d1">
+        <span class="float-tag" data-fr="Tout inclus" data-en="All-inclusive">Tout inclus</span>
+        <div class="imgwrap">
+          <span class="gold-corner"></span><span class="gold-corner bl"></span>
+          <img src="https://raw.githubusercontent.com/StartupSIP/gestionDKC/refs/heads/main/Photos/1100%20boulle/1.%201110%20ave%20boulle/Cuisine.jpeg" alt="Intérieur — Gestion ImmoDKC">
+        </div>
+        <div class="hero-badge">
+          <div class="dot"></div>
+          <div>
+            <div class="num serif lang-fr">5 logements</div><div class="num serif lang-en">5 units</div>
+            <div class="lbl lang-fr">disponibles à Saint-Hyacinthe</div><div class="lbl lang-en">available in Saint-Hyacinthe</div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Market Selector -->
-    <div class="section-header">
-      <div>
-        <h2 class="section-title lang-fr">Nos villes</h2>
-        <h2 class="section-title lang-en">Our Cities</h2>
-        <p class="section-subtitle lang-fr">Choisissez votre marché pour voir les disponibilités</p>
-        <p class="section-subtitle lang-en">Select a market to view availability</p>
-      </div>
+    <!-- STATISTIQUES -->
+    <div class="stats fullbleed reveal">
+      <div class="stat"><div class="n" data-count="4">0</div><div class="c" data-fr="Villes desservies" data-en="Cities served">Villes desservies</div></div>
+      <div class="stat"><div class="n" data-count="24">0<span>h</span></div><div class="c" data-fr="Délai de réponse" data-en="Response time">Délai de réponse</div></div>
+      <div class="stat"><div class="n" data-count="2">0</div><div class="c" data-fr="Régions" data-en="Regions">Régions</div></div>
+      <div class="stat"><div class="n" data-count="100">0<span>%</span></div><div class="c" data-fr="Service bilingue" data-en="Bilingual service">Service bilingue</div></div>
     </div>
 
+    <!-- BANDEAU VILLES -->
+    <div class="marquee fullbleed" aria-hidden="true"><div class="track">
+      <span>Saint-Hyacinthe ✦ Longueuil ✦ Sherbrooke ✦ Drummondville ✦</span>
+      <span>Saint-Hyacinthe ✦ Longueuil ✦ Sherbrooke ✦ Drummondville ✦</span>
+    </div></div>
+
+    <!-- DISPONIBILITÉS -->
+    <div class="sec-head reveal" id="disponibilites">
+      <div class="eyebrow center" data-fr="Disponibilités" data-en="Availability">Disponibilités</div>
+      <h2 class="section-title lang-fr">Logements <em>disponibles</em></h2>
+      <h2 class="section-title lang-en">Available <em>units</em></h2>
+      <p class="section-subtitle lang-fr">Consultez toutes nos disponibilités à jour sur notre portail de location.</p>
+      <p class="section-subtitle lang-en">See all our up-to-date availabilities on our rental portal.</p>
+    </div>
     <div class="market-selector">
-      <div class="market-card active">
+      <div class="market-card active reveal">
         <div class="market-flag">⚜ Québec · Montérégie</div>
         <div class="market-name">Saint-Hyacinthe</div>
         <div class="market-stat"><span data-fr="Présence" data-en="Presence">Présence</span><strong data-fr="Principale" data-en="Primary">Principale</strong></div>
         <div class="market-available lang-fr">● 5 unités disponibles</div>
         <div class="market-available lang-en">● 5 units available</div>
       </div>
-      <div class="market-card">
+      <div class="market-card reveal d1">
         <div class="market-flag">⚜ Québec · Montérégie</div>
         <div class="market-name">Longueuil</div>
         <div class="market-stat"><span data-fr="Présence" data-en="Presence">Présence</span><strong data-fr="En croissance" data-en="Growing">En croissance</strong></div>
         <div class="market-full lang-fr">○ Complet</div>
         <div class="market-full lang-en">○ Full</div>
       </div>
-      <div class="market-card">
+      <div class="market-card reveal d2">
         <div class="market-flag">⚜ Québec · Estrie</div>
         <div class="market-name">Sherbrooke</div>
         <div class="market-stat"><span data-fr="Présence" data-en="Presence">Présence</span><strong data-fr="En croissance" data-en="Growing">En croissance</strong></div>
         <div class="market-full lang-fr">○ Complet</div>
         <div class="market-full lang-en">○ Full</div>
       </div>
-      <div class="market-card">
+      <div class="market-card reveal d3">
         <div class="market-flag">⚜ Québec · Centre-du-Québec</div>
         <div class="market-name">Drummondville</div>
         <div class="market-stat"><span data-fr="Présence" data-en="Presence">Présence</span><strong data-fr="Sélective" data-en="Selective">Sélective</strong></div>
         <div class="market-full lang-fr">○ Complet</div>
         <div class="market-full lang-en">○ Full</div>
       </div>
-      <div class="market-card">
-        <div class="market-flag">🍁 Alberta</div>
-        <div class="market-name">Edmonton</div>
-        <div class="market-stat"><span data-fr="Présence" data-en="Presence">Présence</span><strong data-fr="Nouvelle" data-en="New">Nouvelle</strong></div>
-        <div class="market-full lang-fr">○ Complet</div>
-        <div class="market-full lang-en">○ Full</div>
+    </div>
+    <div class="center-cta reveal">
+      <button class="btn-primary" onclick="openRentals()" data-fr="Voir tous les logements disponibles →" data-en="View all available units →">Voir tous les logements disponibles →</button>
+    </div>
+
+    <!-- LOUER EN 3 ÉTAPES -->
+    <div class="sec-head reveal">
+      <div class="eyebrow center" data-fr="Simple & humain" data-en="Simple & human">Simple &amp; humain</div>
+      <h2 class="section-title lang-fr">Louer chez nous en <em>3 étapes</em></h2>
+      <h2 class="section-title lang-en">Rent with us in <em>3 steps</em></h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal" onclick="openRentals()"><div class="ico">🔎<b>1</b></div><h4 data-fr="Choisissez" data-en="Choose">Choisissez</h4><p data-fr="Parcourez les logements disponibles et trouvez celui qui vous convient." data-en="Browse available units and find the one that suits you.">Parcourez les logements disponibles et trouvez celui qui vous convient.</p></div>
+      <div class="step reveal d1" onclick="window.open('https://calendly.com/gostartupsip/30min','_blank','noopener')"><div class="ico">📅<b>2</b></div><h4 data-fr="Visitez" data-en="Visit">Visitez</h4><p data-fr="Réservez une visite en ligne en quelques clics, à l'heure qui vous arrange." data-en="Book a visit online in a few clicks, at a time that works for you.">Réservez une visite en ligne en quelques clics, à l'heure qui vous arrange.</p></div>
+      <div class="step reveal d2" onclick="window.location.href='mailto:location@immodkc.ca?subject=Emmenagement%20-%20Gestion%20ImmoDKC'"><div class="ico">🔑<b>3</b></div><h4 data-fr="Emménagez" data-en="Move in">Emménagez</h4><p data-fr="Signature simple, entretien attentif et réponse sous 24 h après votre arrivée." data-en="Simple signing, attentive maintenance, and a response within 24h after you move in.">Signature simple, entretien attentif et réponse sous 24 h après votre arrivée.</p></div>
+    </div>
+
+    <!-- ILS VIVENT CHEZ NOUS -->
+    <div class="sec-head reveal">
+      <div class="eyebrow center" data-fr="Ils vivent chez nous" data-en="They live with us">Ils vivent chez nous</div>
+      <h2 class="section-title lang-fr">Ce qu'en disent <em>nos locataires</em></h2>
+      <h2 class="section-title lang-en">What <em>our tenants</em> say</h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal">
+        <div class="stars">★★★★★</div>
+        <div class="testimonial-quote lang-fr">« On a trouvé notre logement à Saint-Hyacinthe en deux jours via leur site. Visite réservée en ligne, réponse le jour même. Tellement plus simple que Kijiji. »</div>
+        <div class="testimonial-quote lang-en">« We found our place in Saint-Hyacinthe in two days through their site. Visit booked online, answer the same day. So much easier than Kijiji. »</div>
+        <div class="testimonial-attribution lang-fr">Marie-Pier · Saint-Hyacinthe · depuis 2022</div>
+        <div class="testimonial-attribution lang-en">Marie-Pier · Saint-Hyacinthe · since 2022</div>
+      </div>
+      <div class="testimonial-card reveal d1">
+        <div class="stars">★★★★★</div>
+        <div class="testimonial-quote lang-fr">« Quand le chauffe-eau a lâché en janvier, c'était réglé en 24h. Pour un proprio à distance, j'étais impressionné. »</div>
+        <div class="testimonial-quote lang-en">"When the water heater broke in January, it was fixed within 24h. For a remote landlord, I was impressed."</div>
+        <div class="testimonial-attribution lang-fr">David · Sherbrooke · depuis 2024</div>
+        <div class="testimonial-attribution lang-en">David · Sherbrooke · since 2024</div>
+      </div>
+      <div class="testimonial-card reveal d2">
+        <div class="stars">★★★★★</div>
+        <div class="testimonial-quote lang-fr">« Nouveaux arrivants, avoir un propriétaire qui répond dans les deux langues a tout simplifié. »</div>
+        <div class="testimonial-quote lang-en">"As newcomers, having a landlord who responds in both languages made everything easier."</div>
+        <div class="testimonial-attribution lang-fr">Amara &amp; Joel · Longueuil · depuis 2025</div>
+        <div class="testimonial-attribution lang-en">Amara &amp; Joel · Longueuil · since 2025</div>
       </div>
     </div>
 
-
+    <!-- LOCATAIRES ACTUELS -->
+    <div class="cta-band fullbleed reveal">
+      <div class="eyebrow center" data-fr="Locataires actuels" data-en="Current tenants">Locataires actuels</div>
+      <div class="lang-fr"><h2>Un problème dans votre logement ?<br><em>On s'en occupe.</em></h2></div>
+      <div class="lang-en"><h2>A problem in your home?<br><em>We're on it.</em></h2></div>
+      <p class="lang-fr">Envoyez une demande d'entretien en 2 minutes — réponse sous 24 heures, dans votre langue.</p>
+      <p class="lang-en">Send a maintenance request in 2 minutes — response within 24 hours, in your language.</p>
+      <button class="btn-primary" onclick="showPage('entretien')" data-fr="Faire un appel de service →" data-en="Submit a service request →">Faire un appel de service →</button>
+    </div>
   </section>
 
 
@@ -451,8 +522,8 @@
       <div>
         <h2 class="section-title lang-fr">Nos villes</h2>
         <h2 class="section-title lang-en">Our Cities</h2>
-        <p class="section-subtitle lang-fr">Cinq marchés, un même standard de gestion</p>
-        <p class="section-subtitle lang-en">Five markets, one consistent standard of management</p>
+        <p class="section-subtitle lang-fr">Quatre marchés, un même standard de gestion</p>
+        <p class="section-subtitle lang-en">Four markets, one consistent standard of management</p>
       </div>
     </div>
 
@@ -525,37 +596,19 @@
         </div>
       </div>
     </div>
-
-    <!-- Edmonton -->
-    <div class="city-block">
-      <div class="city-image">
-        <img id="city-img-edmonton" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Downtown_Edmonton_2018.jpg/1280px-Downtown_Edmonton_2018.jpg" alt="Edmonton">
-      </div>
-      <div class="city-info">
-        <div class="city-flag">🍁 Alberta</div>
-        <h3>Edmonton</h3>
-        <p class="lang-fr">Notre premier marché hors Québec. Une économie forte, une croissance démographique soutenue et un cadre locatif différent que nous maîtrisons, avec un service en anglais.</p>
-        <p class="lang-en">Our first market outside Québec. A strong economy, sustained population growth, and a different rental framework that we have mastered — with full English-language service.</p>
-        <div class="city-facts">
-          <div><div class="city-fact-num lang-fr">—</div><div class="city-fact-label lang-fr">Complet</div><div class="city-fact-num lang-en">—</div><div class="city-fact-label lang-en">Full</div></div>
-          <div><div class="city-fact-num">≈ 1 550 $</div><div class="city-fact-label lang-fr">Loyer 2 ch.</div><div class="city-fact-label lang-en">2-bed avg.</div></div>
-          <div><div class="city-fact-num lang-fr">Nouvelle</div><div class="city-fact-num lang-en">New</div><div class="city-fact-label lang-fr">Présence</div><div class="city-fact-label lang-en">Presence</div></div>
-        </div>
-      </div>
-    </div>
   </section>
 
   <!-- ============ PAGE: VIVRE CHEZ NOUS / À PROPOS ============ -->
   <section class="page" id="page-apropos">
     <div class="about-intro lang-fr">
       <div class="quote-mark">"</div>
-      <h3>Que vous soyez à Saint-Hyacinthe ou à Edmonton, vous méritez un propriétaire qui répond, qui entretient, et qui vous respecte.</h3>
+      <h3>Que vous soyez à Saint-Hyacinthe ou à Sherbrooke, vous méritez un propriétaire qui répond, qui entretient, et qui vous respecte.</h3>
       <div class="about-signature">— Cynthie Dega Kougoum</div>
       <div class="about-role">Fondatrice · Gestion ImmoDKC</div>
     </div>
     <div class="about-intro lang-en">
       <div class="quote-mark">"</div>
-      <h3>Whether you're in Saint-Hyacinthe or Edmonton, you deserve a landlord who responds, maintains, and respects you.</h3>
+      <h3>Whether you're in Saint-Hyacinthe or Sherbrooke, you deserve a landlord who responds, maintains, and respects you.</h3>
       <div class="about-signature">— Cynthie Dega Kougoum</div>
       <div class="about-role">Founder · Gestion ImmoDKC</div>
     </div>
@@ -581,8 +634,8 @@
         <div class="diff-number">02 — <span class="lang-fr">Transparence</span><span class="lang-en">Transparency</span></div>
         <div class="diff-title lang-fr">Règles claires, partout</div>
         <div class="diff-title lang-en">Clear rules, everywhere</div>
-        <div class="diff-text lang-fr">Au Québec, augmentations conformes au TAL. En Alberta, préavis écrit et hausses prévisibles, une fois par an.</div>
-        <div class="diff-text lang-en">In Québec, rent increases follow the TAL guidelines. In Alberta, written notice and predictable increases, once a year.</div>
+        <div class="diff-text lang-fr">Augmentations conformes aux barèmes du TAL — préavis écrit et hausses prévisibles, une fois par an.</div>
+        <div class="diff-text lang-en">Rent increases follow the TAL guidelines: written notice and predictable adjustments, once a year.</div>
       </div>
       <div class="diff-item">
         <div class="diff-number">03 — <span class="lang-fr">Entretien</span><span class="lang-en">Maintenance</span></div>
@@ -609,27 +662,8 @@
         <div class="diff-number">06 — <span class="lang-fr">Bilingue</span><span class="lang-en">Bilingual</span></div>
         <div class="diff-title lang-fr">Servi dans votre langue</div>
         <div class="diff-title lang-en">Service in your language</div>
-        <div class="diff-text lang-fr">Service en français au Québec, en anglais en Alberta. Toujours dans la langue qui vous convient.</div>
-        <div class="diff-text lang-en">Service in French in Québec, in English in Alberta. Always in the language that works for you.</div>
-      </div>
-    </div>
-
-    <div class="testimonials-grid">
-      <div class="testimonial-card">
-        <div class="testimonial-quote lang-fr">« On a trouvé notre logement à Saint-Hyacinthe en deux jours via leur site. Visite réservée en ligne, réponse le jour même. Tellement plus simple que Kijiji. »</div>
-        <div class="testimonial-quote lang-en">« We found our place in Saint-Hyacinthe in two days through their site. Visit booked online, answer the same day. So much easier than Kijiji. »</div>
-        <div class="testimonial-attribution lang-fr">Marie-Pier · Saint-Hyacinthe · depuis 2022</div>
-        <div class="testimonial-attribution lang-en">Marie-Pier · Saint-Hyacinthe · since 2022</div>
-      </div>
-      <div class="testimonial-card">
-        <div class="testimonial-quote lang-fr">« Quand le chauffe-eau a lâché en janvier, c'était réglé en 24h. Pour un proprio à distance, j'étais impressionné. »</div>
-        <div class="testimonial-quote lang-en">"When the water heater broke in January, it was fixed within 24h. For a remote landlord, I was impressed."</div>
-        <div class="testimonial-attribution lang-fr">David · Sherbrooke · depuis 2024</div>
-        <div class="testimonial-attribution lang-en">David · Sherbrooke · since 2024</div>
-      </div>
-      <div class="testimonial-card">
-        <div class="testimonial-quote">"As newcomers to Edmonton, having a landlord who responds in both languages made everything easier."</div>
-        <div class="testimonial-attribution">Amara &amp; Joel · Edmonton · since 2025</div>
+        <div class="diff-text lang-fr">Service en français comme en anglais, toujours dans la langue qui vous convient.</div>
+        <div class="diff-text lang-en">Service in French or English — always in the language that works for you.</div>
       </div>
     </div>
   </section>
@@ -696,8 +730,8 @@
         <div class="audience-eyebrow lang-en">— For sellers and brokers —</div>
         <h2 class="section-title lang-fr">Nous achetons.</h2>
         <h2 class="section-title lang-en">We buy.</h2>
-        <p class="section-subtitle lang-fr">Acheteuse sérieuse d'immeubles résidentiels au Québec et en Alberta. Triplex à quintuplex, fermeture rapide, pré-approbation en place. Présentez-nous une opportunité, discrètement.</p>
-        <p class="section-subtitle lang-en">Serious buyer of residential buildings in Québec and Alberta. Triplex to quintuplex, fast closing, pre-approval in place. Present us an opportunity, discreetly.</p>
+        <p class="section-subtitle lang-fr">Acheteuse sérieuse d'immeubles résidentiels sur la Rive-Sud et en Estrie. Triplex à quintuplex, fermeture rapide, pré-approbation en place. Présentez-nous une opportunité, discrètement.</p>
+        <p class="section-subtitle lang-en">Serious buyer of residential buildings in the South Shore and Estrie regions. Triplex to quintuplex, fast closing, pre-approval in place. Present us an opportunity, discreetly.</p>
       </div>
 
       <!-- Formulaire relié à maintenanceimmodkc@gmail.com via FormSubmit. -->
@@ -906,9 +940,9 @@
 <footer>
   <div class="footer-grid">
     <div>
-      <img class="footer-logo-img" src="https://raw.githubusercontent.com/StartupSIP/gestionDKC/refs/heads/main/Logo/Logo_white.png" alt="Gestion ImmoDKC">
-      <div class="footer-tagline lang-fr">Immobilier locatif au Québec et en Alberta. Logements soignés, gestion attentive, service bilingue.</div>
-      <div class="footer-tagline lang-en">Rental properties in Québec and Alberta. Quality homes, attentive management, bilingual service.</div>
+      <img class="footer-logo-img" src="https://raw.githubusercontent.com/StartupSIP/gestionDKC/refs/heads/main/Logo/Logo_black.png" alt="Gestion ImmoDKC">
+      <div class="footer-tagline lang-fr">Immobilier locatif sur la Rive-Sud et en Estrie. Logements soignés, gestion attentive, service bilingue.</div>
+      <div class="footer-tagline lang-en">Rental properties in the South Shore and Estrie regions. Quality homes, attentive management, bilingual service.</div>
     </div>
     <div class="footer-col">
       <h4 data-fr="Locataires" data-en="Tenants">Locataires</h4>
@@ -923,7 +957,6 @@
       <button onclick="showPage('villes')">Longueuil</button>
       <button onclick="showPage('villes')">Sherbrooke</button>
       <button onclick="showPage('villes')">Drummondville</button>
-      <button onclick="showPage('villes')">Edmonton</button>
     </div>
     <div class="footer-col">
       <h4 data-fr="Affaires &amp; contact" data-en="Business &amp; contact">Affaires &amp; contact</h4>
@@ -932,90 +965,99 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <div class="lang-fr">© 2026 Gestion ImmoDKC · Québec &amp; Alberta · Tous droits réservés</div>
-    <div class="lang-en">© 2026 Gestion ImmoDKC · Québec &amp; Alberta · All rights reserved</div>
+    <div class="lang-fr">© 2026 Gestion ImmoDKC · Rive-Sud &amp; Estrie · Tous droits réservés</div>
+    <div class="lang-en">© 2026 Gestion ImmoDKC · South Shore &amp; Estrie · All rights reserved</div>
   </div>
 </footer>
 
 <script>
   /* ===== LOGEMENTS DISPONIBLES (portail externe Magex) ===== */
   var RENTAL_URL = 'https://peweb.magextechnologies.com/RentalListings/Femam1/Cynthie-Dega';
-  function openRentals() {
-    // Le portail Magex choisit sa langue selon le navigateur / son propre sélecteur.
-    window.open(RENTAL_URL, '_blank', 'noopener');
-  }
+  function openRentals(){ window.open(RENTAL_URL, '_blank', 'noopener'); }
 
-  /* ===== LANGUAGE ===== */
+  /* ===== LANGUE ===== */
   var currentLang = 'fr';
-
-  function toggleLang() {
+  function toggleLang(){
     currentLang = currentLang === 'fr' ? 'en' : 'fr';
     document.documentElement.lang = currentLang;
     document.querySelector('.lang-toggle').textContent = currentLang === 'fr' ? 'EN' : 'FR';
-
-    // La visibilité FR/EN est gérée par le CSS via l'attribut <html lang="...">
-
-    // Update data-fr / data-en text (leaf nodes only)
-    document.querySelectorAll('[data-fr]').forEach(function(el) {
-      if (el.children.length === 0) {
-        el.textContent = el.getAttribute('data-' + currentLang);
-      }
-    });
-
-    // Update placeholder attributes
-    document.querySelectorAll('[data-placeholder-fr]').forEach(function(el) {
-      el.placeholder = el.getAttribute('data-placeholder-' + currentLang);
-    });
+    document.querySelectorAll('[data-fr]').forEach(function(el){ if(el.children.length === 0){ el.textContent = el.getAttribute('data-' + currentLang); } });
+    document.querySelectorAll('[data-placeholder-fr]').forEach(function(el){ el.placeholder = el.getAttribute('data-placeholder-' + currentLang); });
   }
 
-  /* ===== PAGE NAVIGATION ===== */
-  function showPage(pageId) {
-    document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
-    var target = document.getElementById('page-' + pageId);
-    if (target) target.classList.add('active');
-    document.querySelectorAll('.nav-links button').forEach(function(b) { b.classList.remove('active'); });
-    var navBtn = document.querySelector('.nav-links button[data-page="' + pageId + '"]');
-    if (navBtn) navBtn.classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  /* ===== NAVIGATION ===== */
+  function showPage(pageId){
+    document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+    var target = document.getElementById('page-' + pageId); if(target) target.classList.add('active');
+    document.querySelectorAll('.nav-links button').forEach(function(b){ b.classList.remove('active'); });
+    var navBtn = document.querySelector('.nav-links button[data-page="' + pageId + '"]'); if(navBtn) navBtn.classList.add('active');
+    var mp = document.getElementById('mpanel'); if(mp) mp.classList.remove('open');
+    window.scrollTo({ top:0, behavior:'smooth' });
+    if(pageId === 'villes') loadCityPhotos();
   }
 
-  /* ===== CITY PHOTOS via Wikipedia API ===== */
+  /* ===== MENU MOBILE ===== */
+  (function(){ var b = document.getElementById('burger'), m = document.getElementById('mpanel');
+    if(b && m) b.addEventListener('click', function(){ m.classList.toggle('open'); }); })();
+
+  /* ===== PHOTOS DES VILLES (Wikipedia) ===== */
   var CITY_WIKI = [
-    { id: 'city-img-longueuil',     title: 'Longueuil' },
-    { id: 'city-img-sherbrooke',    title: 'Sherbrooke' },
-    { id: 'city-img-drummondville', title: 'Drummondville' },
-    { id: 'city-img-edmonton',      title: 'Edmonton' },
-    { id: 'city-img-saint-hyacinthe', title: 'Saint-Hyacinthe, Quebec' }
+    { id:'city-img-longueuil', title:'Longueuil' },
+    { id:'city-img-sherbrooke', title:'Sherbrooke' },
+    { id:'city-img-drummondville', title:'Drummondville' },
+    { id:'city-img-saint-hyacinthe', title:'Saint-Hyacinthe, Quebec' }
   ];
-
-  function loadCityPhotos() {
-    CITY_WIKI.forEach(function(city) {
-      var img = document.getElementById(city.id);
-      if (!img) return;
+  function loadCityPhotos(){
+    CITY_WIKI.forEach(function(city){
+      var img = document.getElementById(city.id); if(!img) return;
       fetch('https://en.wikipedia.org/w/api.php?action=query&titles=' + encodeURIComponent(city.title) + '&prop=pageimages&format=json&pithumbsize=900&pilimit=1&origin=*')
-        .then(function(r) { return r.json(); })
-        .then(function(data) {
-          var pages = data.query.pages;
-          var page = Object.values(pages)[0];
-          if (page && page.thumbnail && page.thumbnail.source) {
-            img.src = page.thumbnail.source;
-          }
-        })
-        .catch(function() { /* keep fallback src */ });
+        .then(function(r){ return r.json(); })
+        .then(function(data){ var page = Object.values(data.query.pages)[0]; if(page && page.thumbnail && page.thumbnail.source){ img.src = page.thumbnail.source; } })
+        .catch(function(){});
     });
   }
 
-  // Load city photos when page is revealed
-  var _origShowPage = showPage;
-  showPage = function(pageId) {
-    _origShowPage(pageId);
-    if (pageId === 'villes') loadCityPhotos();
-  };
+  /* ===== REVEALS AU DÉFILEMENT ===== */
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold:.14, rootMargin:'0px 0px -6% 0px' });
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else { document.documentElement.className += ' no-io'; }
 
-  // Deep-link : ouvrir un onglet via l'ancre d'URL (ex. /#entretien depuis un code QR)
-  (function() {
-    var h = (location.hash || '').replace(/^#/, '');
-    if (h && document.getElementById('page-' + h)) showPage(h);
+  /* ===== COMPTEURS DES STATISTIQUES ===== */
+  function runCount(el){
+    var target = +el.getAttribute('data-count'), suf = el.querySelector('span'), t0 = null, dur = 1400;
+    function step(ts){ if(!t0) t0 = ts; var p = Math.min((ts-t0)/dur,1);
+      el.childNodes[0].nodeValue = Math.round(target*(0.5 - Math.cos(Math.PI*p)/2));
+      if(suf) el.appendChild(suf); if(p<1) requestAnimationFrame(step); }
+    requestAnimationFrame(step);
+  }
+  if('IntersectionObserver' in window){
+    var sio = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ e.target.querySelectorAll('[data-count]').forEach(runCount); sio.unobserve(e.target); } });
+    }, { threshold:.4 });
+    var st = document.querySelector('.stats'); if(st) sio.observe(st);
+  }
+
+  /* ===== BARRE DE PROGRESSION + EN-TÊTE RÉTRACTÉ ===== */
+  (function(){
+    var header = document.querySelector('header'), bar = document.getElementById('scroll-progress'), ticking = false;
+    function onScroll(){
+      var y = window.pageYOffset || document.documentElement.scrollTop;
+      var docH = document.documentElement.scrollHeight - window.innerHeight;
+      if(bar) bar.style.width = (docH > 0 ? (y/docH*100) : 0) + '%';
+      if(header) header.classList.toggle('shrink', y > 40);
+      ticking = false;
+    }
+    window.addEventListener('scroll', function(){ if(!ticking){ ticking = true; requestAnimationFrame(onScroll); } }, { passive:true });
+    onScroll();
+  })();
+
+  /* ===== Deep-link (#entretien pour code QR) ===== */
+  (function(){
+    try{ var params = new URLSearchParams(location.search); if(params.get('lang') === 'en') toggleLang(); }catch(e){}
+    var h = (location.hash || '').replace(/^#/, ''); if(h && document.getElementById('page-' + h)) showPage(h);
   })();
 </script>
 
