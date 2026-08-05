@@ -676,7 +676,7 @@
       </div>
 
       <!-- Formulaire relié à gestion@immodkc.ca via FormSubmit. -->
-      <form action="https://formsubmit.co/gestion@immodkc.ca" method="POST">
+      <form action="https://formsubmit.co/maintenance@immodkc.ca" method="POST">
         <input type="hidden" name="_subject" value="💼 Investir — Gestion ImmoDKC">
         <input type="hidden" name="_template" value="table">
         <input type="hidden" name="_captcha" value="false">
@@ -728,7 +728,7 @@
       </div>
 
       <!-- Formulaire relié à gestion@immodkc.ca via FormSubmit. -->
-      <form action="https://formsubmit.co/gestion@immodkc.ca" method="POST">
+      <form action="https://formsubmit.co/maintenance@immodkc.ca" method="POST">
         <input type="hidden" name="_subject" value="🏢 Opportunité vendeur — Gestion ImmoDKC">
         <input type="hidden" name="_template" value="table">
         <input type="hidden" name="_captcha" value="false">
@@ -889,12 +889,14 @@
           <p class="hint"><span class="lang-fr">Depuis quand ? Qu'avez-vous remarqué ? Plus il y a de détails, plus vite c'est réparé.</span><span class="lang-en">Since when? What have you noticed? More detail means a faster fix.</span></p>
           <textarea id="ent-desc" name="Description" required></textarea>
         </div>
-
+<!-- 
         <div class="form-row">
           <label for="ent-photo"><span class="lang-fr">Photo ou vidéo</span><span class="lang-en">Photo or video</span></label>
-          <p class="hint"><span class="lang-fr">Une photo nous aide à envoyer la bonne personne avec les bonnes pièces.</span><span class="lang-en">A photo helps us send the right person with the right parts.</span></p>
+          <p class="hint"><span class="lang-fr">Une photo nous aide à envoyer la bonne personne avec les bonnes pièces. - Maximum de 10 MB total pour les photos.</span><span class="lang-en">A photo helps us send the right person with the right parts.</span></p>
           <input type="file" id="ent-photo" name="attachment" accept="image/*,video/*">
         </div>
+
+      -->
 
         <fieldset>
           <legend><span class="lang-fr">Pouvons-nous entrer en votre absence ? *</span><span class="lang-en">May we enter if you're not home? *</span></legend>
@@ -1050,7 +1052,12 @@
   /* ===== Deep-link (#entretien pour code QR) ===== */
   (function(){
     try{ var params = new URLSearchParams(location.search); if(params.get('lang') === 'en') toggleLang(); }catch(e){}
-    var h = (location.hash || '').replace(/^#/, ''); if(h && document.getElementById('page-' + h)) showPage(h);
+    var h = (location.hash || '').replace(/^#/, '');
+    if(!h){                                   // URL propre (/entretien) servie par index.html
+      var seg = (location.pathname || '').replace(/\/+$/,'').split('/').pop().replace(/\.html$/,'');
+      if(seg && document.getElementById('page-' + seg)) h = seg;
+    }
+    if(h && document.getElementById('page-' + h)) showPage(h);
   })();
 </script>
 
